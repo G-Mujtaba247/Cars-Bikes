@@ -11,7 +11,7 @@ const carImages = {
   mercedesCClass: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&h=400&fit=crop',
   audiA4: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&h=400&fit=crop',
   hyundaiCreta: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&h=400&fit=crop',
-  mahindraXUV700: 'https://images.unsplash.com/photo-1549399542-7e8f8ac1b1e7?w=600&h=400&fit=crop',
+  mahindraXUV700: 'https://auto.mahindra.com/on/demandware.static/-/Sites-mahindra-product-catalog/default/dwb2e1f2a8/images/X700/hires/AX7_StealthBlack_1366x443.png',
   tataNexon: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=400&fit=crop',
   kiaSonet: 'https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&h=400&fit=crop',
   mgHectorPlus: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=400&fit=crop',
@@ -22,12 +22,12 @@ const bikeImages = {
   royalEnfieldClassic: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=600&h=400&fit=crop',
   kawasakiNinja: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600&h=400&fit=crop',
   yamahaR15: 'https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=600&h=400&fit=crop',
-  ktmDuke390: 'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=600&h=400&fit=crop',
+  ktmDuke390: 'https://images.unsplash.com/photo-1650716737931-2415bc142226?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8a3RtJTIwMzkwJTIwZHVrZXxlbnwwfHwwfHx8MA%3D%3D',
   hondaCBR: 'https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=600&h=400&fit=crop',
   bajajPulsar: 'https://images.unsplash.com/photo-1622185135505-2d795003994a?w=600&h=400&fit=crop',
   suzukiGixxer: 'https://images.unsplash.com/photo-1547549082-6bc09f2049ae?w=600&h=400&fit=crop',
   triumphStreet: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop',
-  ducatiMonster: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?w=600&h=400&fit=crop',
+  ducatiMonster: 'https://images.unsplash.com/photo-1625812183887-83dde2b47a88?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZHVjYXRpJTIwbW9uc3RlcnxlbnwwfHwwfHx8MA%3D%3D',
   harleyDavidson: 'https://images.unsplash.com/photo-1558980664-769d59546b3d?w=600&h=400&fit=crop',
 };
 

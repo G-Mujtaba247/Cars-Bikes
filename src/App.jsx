@@ -14,6 +14,11 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const VehicleListingPage = lazy(() => import('./pages/VehicleListingPage'));
 const VehicleDetailPage = lazy(() => import('./pages/VehicleDetailPage'));
 const ComparePage = lazy(() => import('./pages/ComparePage'));
+const ResourcesPage = lazy(() => import('./pages/ResourcesPage'));
+const BuyingGuidePage = lazy(() => import('./pages/BuyingGuidePage'));
+const ReviewsPage = lazy(() => import('./pages/ReviewsPage'));
+const NewsPage = lazy(() => import('./pages/NewsPage'));
+const ContactUsPage = lazy(() => import('./pages/ContactUsPage'));
 
 // Loading spinner component
 function LoadingSpinner() {
@@ -57,6 +62,11 @@ function App() {
                 <Route path="/bikes" element={<VehicleListingPage type="bike" />} />
                 <Route path="/vehicle/:id" element={<VehicleDetailPage />} />
                 <Route path="/compare" element={<ComparePage />} />
+                <Route path="/resources" element={<ResourcesPage />} />
+                <Route path="/buying-guide" element={<BuyingGuidePage />} />
+                <Route path="/reviews" element={<ReviewsPage />} />
+                <Route path="/news" element={<NewsPage />} />
+                <Route path="/contact" element={<ContactUsPage />} />
                 {/* 404 Fallback */}
                 <Route
                   path="*"

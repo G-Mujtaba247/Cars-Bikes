@@ -20,18 +20,18 @@ export default function Footer() {
       { label: 'Kawasaki', path: '/bikes?brand=Kawasaki' },
     ],
     'Resources': [
-      { label: 'Buying Guide', path: '#' },
-      { label: 'Reviews', path: '#' },
-      { label: 'News', path: '#' },
-      { label: 'Contact Us', path: '#' },
+      { label: 'Buying Guide', path: '/buying-guide' },
+      { label: 'Reviews', path: '/reviews' },
+      { label: 'News', path: '/news' },
+      { label: 'Contact Us', path: '/contact' },
     ],
   };
 
   const socialLinks = [
-    { icon: Github, href: '#', label: 'GitHub' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Mail, href: '#', label: 'Email' },
+    { icon: Github, href: 'https://github.com/Mujtaba247', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/', label: 'LinkedIn' },
+    { icon: Twitter, href: 'https://twitter.com/', label: 'Twitter' },
+    { icon: Mail, href: 'mailto:mujtabaofficial247@gmail.com', label: 'Email' },
   ];
 
   return (

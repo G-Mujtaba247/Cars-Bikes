@@ -4,7 +4,7 @@
  */
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Car, Bike, GitCompare, MessageCircle, Home, Search } from 'lucide-react';
+import { Menu, X, Car, Bike, GitCompare, MessageCircle, Home, Search, BookOpen } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
 
 export default function Navbar() {
@@ -30,6 +30,7 @@ export default function Navbar() {
     { path: '/cars', label: 'Cars', icon: Car },
     { path: '/bikes', label: 'Bikes', icon: Bike },
     { path: '/compare', label: 'Compare', icon: GitCompare, badge: comparisonList.length },
+    { path: '/resources', label: 'Resources', icon: BookOpen },
   ];
 
   const isActive = (path) => location.pathname === path;
