@@ -2,15 +2,15 @@
  * VehicleContext - Global state management for vehicle data, filters, and comparison
  * Uses React Context API with useReducer for complex state management
  */
-import { createContext, useContext, useReducer, useCallback } from 'react';
-import { carsData, bikesData, allVehicles } from '../data/vehicles';
+import { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
+import { fetchCars, fetchBikes } from '../services/api';
 
 // Initial state for the vehicle context
 const initialState = {
   // Vehicle data
-  cars: carsData,
-  bikes: bikesData,
-  allVehicles: allVehicles,
+  cars: [],
+  bikes: [],
+  allVehicles: [],
   
   // Filtered results
   filteredVehicles: [],
@@ -45,6 +45,7 @@ const ACTIONS = {
   CLEAR_COMPARISON: 'CLEAR_COMPARISON',
   SET_FILTERED_VEHICLES: 'SET_FILTERED_VEHICLES',
   SET_LOADING: 'SET_LOADING',
+  SET_DATA: 'SET_DATA',
 };
 
 // Reducer function
@@ -106,6 +107,14 @@ function vehicleReducer(state, action) {
         ...state,
         isLoading: action.payload,
       };
+      
+    case ACTIONS.SET_DATA:
+      return {
+        ...state,
+        cars: action.payload.cars,
+        bikes: action.payload.bikes,
+        allVehicles: action.payload.allVehicles,
+      };
     
     default:
       return state;
@@ -121,12 +130,29 @@ const VehicleContext = createContext();
 export function VehicleProvider({ children }) {
   const [state, dispatch] = useReducer(vehicleReducer, initialState);
   
+  // Fetch data on mount
+  useEffect(() => {
+    const loadData = async () => {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+      try {
+        const [cars, bikes] = await Promise.all([fetchCars(), fetchBikes()]);
+        const allVehicles = [...cars, ...bikes];
+        dispatch({ type: ACTIONS.SET_DATA, payload: { cars, bikes, allVehicles } });
+      } catch (error) {
+        console.error("Failed to fetch vehicles:", error);
+      } finally {
+        dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+      }
+    };
+    loadData();
+  }, []);
+
   // Apply filters and return filtered vehicles
   const applyFilters = useCallback(() => {
     const { type, searchQuery, brands, fuelTypes, priceRange, sortBy } = state.filters;
     
     // Start with appropriate dataset
-    let filtered = type === 'car' ? [...carsData] : type === 'bike' ? [...bikesData] : [...allVehicles];
+    let filtered = type === 'car' ? [...state.cars] : type === 'bike' ? [...state.bikes] : [...state.allVehicles];
     
     // Apply search query
     if (searchQuery) {

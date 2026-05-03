@@ -5,10 +5,9 @@
 import { useState } from 'react';
 import { SlidersHorizontal, X, ChevronDown, RotateCcw } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
-import { getBrands, getFuelTypes } from '../data/vehicles';
 
 export default function FilterSidebar({ vehicleType = 'all' }) {
-  const { filters, setFilter, resetFilters } = useVehicle();
+  const { filters, setFilter, resetFilters, allVehicles, cars, bikes } = useVehicle();
   const [isOpen, setIsOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     sort: true,
@@ -17,8 +16,9 @@ export default function FilterSidebar({ vehicleType = 'all' }) {
     price: true,
   });
 
-  const brands = getBrands(vehicleType);
-  const fuelTypes = getFuelTypes(vehicleType);
+  const data = vehicleType === 'car' ? cars : vehicleType === 'bike' ? bikes : allVehicles;
+  const brands = [...new Set(data.map(v => v.brand))].sort();
+  const fuelTypes = [...new Set(data.map(v => v.fuelType))].sort();
 
   const toggleSection = (section) => {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));

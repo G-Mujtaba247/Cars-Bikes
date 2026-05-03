@@ -5,10 +5,11 @@
  */
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User, Sparkles, ChevronDown } from 'lucide-react';
-import { allVehicles, carsData, bikesData, formatPrice } from '../data/vehicles';
+import { useVehicle } from '../context/VehicleContext';
+import { formatPrice } from '../data/vehicles';
 
 // Simple AI response engine using local vehicle data
-function generateResponse(message) {
+function generateResponse(message, carsData, bikesData, allVehicles) {
   const msg = message.toLowerCase().trim();
 
   // Best bike under a price
@@ -145,6 +146,7 @@ function generateResponse(message) {
 }
 
 export default function ChatbotWidget() {
+  const { cars, bikes, allVehicles } = useVehicle();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -185,7 +187,7 @@ export default function ChatbotWidget() {
 
     // Simulate AI thinking delay
     setTimeout(() => {
-      const response = generateResponse(userMessage.text);
+      const response = generateResponse(userMessage.text, cars, bikes, allVehicles);
       const botMessage = {
         type: 'bot',
         ...response,
@@ -384,7 +386,7 @@ export default function ChatbotWidget() {
                       setInput('');
                       setIsTyping(true);
                       setTimeout(() => {
-                        const response = generateResponse(action);
+                        const response = generateResponse(action, cars, bikes, allVehicles);
                         setMessages(prev => [...prev, { type: 'bot', ...response, timestamp: new Date() }]);
                         setIsTyping(false);
                       }, 1000);

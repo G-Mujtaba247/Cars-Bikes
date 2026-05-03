@@ -8,21 +8,21 @@ import {
   ArrowLeft, Star, Fuel, Gauge, Settings, Zap, GitCompare, Check,
   Calendar, Users, Layers, Weight, Droplets, ChevronRight, Share2, Heart
 } from 'lucide-react';
-import { getVehicleById, allVehicles, formatPrice } from '../data/vehicles';
+import { formatPrice } from '../data/vehicles';
 import { useVehicle } from '../context/VehicleContext';
 import VehicleCard from '../components/VehicleCard';
 
 export default function VehicleDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCompare, removeFromCompare, isInComparison } = useVehicle();
+  const { allVehicles, addToCompare, removeFromCompare, isInComparison } = useVehicle();
   const [vehicle, setVehicle] = useState(null);
   const [similarVehicles, setSimilarVehicles] = useState([]);
   const [activeSpecTab, setActiveSpecTab] = useState('overview');
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
-    const v = getVehicleById(id);
+    const v = allVehicles.find(v => v.id === id);
     if (v) {
       setVehicle(v);
       // Get similar vehicles (same type, different vehicle)
@@ -36,7 +36,7 @@ export default function VehicleDetailPage() {
     }
     // Scroll to top on vehicle change
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id, navigate]);
+  }, [id, navigate, allVehicles]);
 
   if (!vehicle) {
     return (

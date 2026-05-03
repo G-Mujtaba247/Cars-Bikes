@@ -7,10 +7,9 @@ import { Link } from 'react-router-dom';
 import { GitCompare, Plus, ArrowRight, Car, Bike, X, Search } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
 import ComparisonTable from '../components/ComparisonTable';
-import { allVehicles } from '../data/vehicles';
 
 export default function ComparePage() {
-  const { comparisonList, addToCompare, clearComparison } = useVehicle();
+  const { comparisonList, addToCompare, clearComparison, allVehicles } = useVehicle();
   const [showSelector, setShowSelector] = useState(false);
   const [selectorSearch, setSelectorSearch] = useState('');
 

@@ -7,17 +7,15 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Car, Bike, Zap, Shield, Award, TrendingUp, ChevronRight, Star } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
 import VehicleCard from '../components/VehicleCard';
-import { getFeaturedVehicles, carsData, bikesData, formatPrice } from '../data/vehicles';
+import { useVehicle } from '../context/VehicleContext';
+import { formatPrice } from '../data/vehicles';
 
 export default function HomePage() {
-  const [featuredCars, setFeaturedCars] = useState([]);
-  const [featuredBikes, setFeaturedBikes] = useState([]);
+  const { cars, bikes } = useVehicle();
   const [activeTab, setActiveTab] = useState('all');
 
-  useEffect(() => {
-    setFeaturedCars(getFeaturedVehicles('car'));
-    setFeaturedBikes(getFeaturedVehicles('bike'));
-  }, []);
+  const featuredCars = cars.filter(c => c.featured);
+  const featuredBikes = bikes.filter(b => b.featured);
 
   const stats = [
     { value: '20+', label: 'Vehicles', icon: Car },
@@ -32,7 +30,7 @@ export default function HomePage() {
       description: 'From sedans to SUVs, find your perfect car',
       icon: Car,
       link: '/cars',
-      count: carsData.length,
+      count: cars.length,
       gradient: 'from-primary-500 to-blue-600',
       bg: 'from-primary-500/10 to-blue-600/10',
     },
@@ -41,7 +39,7 @@ export default function HomePage() {
       description: 'Sports, cruisers, and naked bikes await',
       icon: Bike,
       link: '/bikes',
-      count: bikesData.length,
+      count: bikes.length,
       gradient: 'from-accent-500 to-pink-600',
       bg: 'from-accent-500/10 to-pink-600/10',
     },

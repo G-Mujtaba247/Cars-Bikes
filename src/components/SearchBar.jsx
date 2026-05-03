@@ -5,7 +5,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, ArrowRight, Car, Bike } from 'lucide-react';
-import { allVehicles } from '../data/vehicles';
+import { useVehicle } from '../context/VehicleContext';
 
 export default function SearchBar({ 
   variant = 'default', // 'default', 'hero', 'compact'
@@ -13,6 +13,7 @@ export default function SearchBar({
   placeholder = 'Search cars, bikes, brands...',
   className = '' 
 }) {
+  const { allVehicles } = useVehicle();
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
