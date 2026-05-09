@@ -15,13 +15,15 @@ import VehicleCard from '../components/VehicleCard';
 export default function VehicleDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { allVehicles, addToCompare, removeFromCompare, isInComparison } = useVehicle();
+  const { allVehicles, addToCompare, removeFromCompare, isInComparison, isLoading } = useVehicle();
   const [vehicle, setVehicle] = useState(null);
   const [similarVehicles, setSimilarVehicles] = useState([]);
   const [activeSpecTab, setActiveSpecTab] = useState('overview');
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
+    if (isLoading) return;
+
     const v = allVehicles.find(v => v.id === id);
     if (v) {
       setVehicle(v);
@@ -36,12 +38,13 @@ export default function VehicleDetailPage() {
     }
     // Scroll to top on vehicle change
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id, navigate, allVehicles]);
+  }, [id, navigate, allVehicles, isLoading]);
 
-  if (!vehicle) {
+  if (isLoading || !vehicle) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Loading...</div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-dark-900">
+        <div className="w-12 h-12 rounded-full border-2 border-primary-500/30 border-t-primary-500 animate-spin mb-4" />
+        <p className="text-gray-500 animate-pulse">Fetching details...</p>
       </div>
     );
   }

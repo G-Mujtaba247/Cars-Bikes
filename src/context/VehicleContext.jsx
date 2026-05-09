@@ -46,6 +46,9 @@ const ACTIONS = {
   SET_FILTERED_VEHICLES: 'SET_FILTERED_VEHICLES',
   SET_LOADING: 'SET_LOADING',
   SET_DATA: 'SET_DATA',
+  ADD_VEHICLE: 'ADD_VEHICLE',
+  UPDATE_VEHICLE: 'UPDATE_VEHICLE',
+  DELETE_VEHICLE: 'DELETE_VEHICLE',
 };
 
 // Reducer function
@@ -107,13 +110,47 @@ function vehicleReducer(state, action) {
         ...state,
         isLoading: action.payload,
       };
-      
     case ACTIONS.SET_DATA:
       return {
         ...state,
         cars: action.payload.cars,
         bikes: action.payload.bikes,
         allVehicles: action.payload.allVehicles,
+      };
+    
+    case ACTIONS.ADD_VEHICLE:
+      const addedVehicle = action.payload;
+      const newCars = addedVehicle.type === 'car' ? [...state.cars, addedVehicle] : state.cars;
+      const newBikes = addedVehicle.type === 'bike' ? [...state.bikes, addedVehicle] : state.bikes;
+      return {
+        ...state,
+        cars: newCars,
+        bikes: newBikes,
+        allVehicles: [...state.allVehicles, addedVehicle],
+      };
+
+    case ACTIONS.UPDATE_VEHICLE:
+      const updatedVehicle = action.payload;
+      const updatedCars = updatedVehicle.type === 'car' 
+        ? state.cars.map(v => v.id === updatedVehicle.id ? updatedVehicle : v) 
+        : state.cars;
+      const updatedBikes = updatedVehicle.type === 'bike' 
+        ? state.bikes.map(v => v.id === updatedVehicle.id ? updatedVehicle : v) 
+        : state.bikes;
+      return {
+        ...state,
+        cars: updatedCars,
+        bikes: updatedBikes,
+        allVehicles: state.allVehicles.map(v => v.id === updatedVehicle.id ? updatedVehicle : v),
+      };
+
+    case ACTIONS.DELETE_VEHICLE:
+      const { id, type } = action.payload;
+      return {
+        ...state,
+        cars: type === 'car' ? state.cars.filter(v => v.id !== id) : state.cars,
+        bikes: type === 'bike' ? state.bikes.filter(v => v.id !== id) : state.bikes,
+        allVehicles: state.allVehicles.filter(v => v.id !== id),
       };
     
     default:
@@ -131,21 +168,22 @@ export function VehicleProvider({ children }) {
   const [state, dispatch] = useReducer(vehicleReducer, initialState);
   
   // Fetch data on mount
-  useEffect(() => {
-    const loadData = async () => {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-      try {
-        const [cars, bikes] = await Promise.all([fetchCars(), fetchBikes()]);
-        const allVehicles = [...cars, ...bikes];
-        dispatch({ type: ACTIONS.SET_DATA, payload: { cars, bikes, allVehicles } });
-      } catch (error) {
-        console.error("Failed to fetch vehicles:", error);
-      } finally {
-        dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-      }
-    };
-    loadData();
+  const loadData = useCallback(async () => {
+    dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+    try {
+      const [cars, bikes] = await Promise.all([fetchCars(), fetchBikes()]);
+      const allVehicles = [...cars, ...bikes];
+      dispatch({ type: ACTIONS.SET_DATA, payload: { cars, bikes, allVehicles } });
+    } catch (error) {
+      console.error("Failed to fetch vehicles:", error);
+    } finally {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+    }
   }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   // Apply filters and return filtered vehicles
   const applyFilters = useCallback(() => {
@@ -220,6 +258,10 @@ export function VehicleProvider({ children }) {
   
   const isInComparison = (vehicleId) => state.comparisonList.some(v => v.id === vehicleId);
   
+  const addVehicleAction = (vehicle) => dispatch({ type: ACTIONS.ADD_VEHICLE, payload: vehicle });
+  const updateVehicleAction = (vehicle) => dispatch({ type: ACTIONS.UPDATE_VEHICLE, payload: vehicle });
+  const deleteVehicleAction = (id, type) => dispatch({ type: ACTIONS.DELETE_VEHICLE, payload: { id, type } });
+
   const value = {
     ...state,
     filteredVehicles: applyFilters(),
@@ -231,6 +273,10 @@ export function VehicleProvider({ children }) {
     removeFromCompare,
     clearComparison,
     isInComparison,
+    addVehicle: addVehicleAction,
+    updateVehicle: updateVehicleAction,
+    deleteVehicle: deleteVehicleAction,
+    refreshData: loadData,
   };
   
   return (

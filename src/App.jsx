@@ -19,6 +19,7 @@ const BuyingGuidePage = lazy(() => import('./pages/BuyingGuidePage'));
 const ReviewsPage = lazy(() => import('./pages/ReviewsPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
 const ContactUsPage = lazy(() => import('./pages/ContactUsPage'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 
 // Loading spinner component
 function LoadingSpinner() {
@@ -67,6 +68,7 @@ function App() {
                 <Route path="/reviews" element={<ReviewsPage />} />
                 <Route path="/news" element={<NewsPage />} />
                 <Route path="/contact" element={<ContactUsPage />} />
+                <Route path="/admin" element={<AdminDashboard />} />
                 {/* 404 Fallback */}
                 <Route
                   path="*"
