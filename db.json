@@ -573,6 +573,182 @@
         "Santorini Black",
         "Silicon Silver"
       ]
+    },
+    {
+      "name": "Manual UI Test",
+      "brand": "Verified",
+      "type": "car",
+      "price": 1000000,
+      "year": 2024,
+      "rating": 5,
+      "bodyType": "Sedan",
+      "fuelType": "Petrol",
+      "transmission": "",
+      "image": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=400&fit=crop",
+      "description": "",
+      "id": "AydcsqZfrA8",
+      "reviews": 0,
+      "featured": false,
+      "priceFormatted": "₹1,000,000",
+      "features": [
+        "Advanced Braking System",
+        "Digital Instrument Cluster",
+        "LED Headlamps",
+        "Premium Seating"
+      ],
+      "specifications": {
+        "dimensions": "Variable",
+        "wheelbase": "Variable",
+        "groundClearance": "165 mm",
+        "fuelTankCapacity": "45 L",
+        "kerbWeight": "1200 kg"
+      },
+      "colors": [
+        "Standard White",
+        "Midnight Black",
+        "Metallic Silver"
+      ]
+    },
+    {
+      "id": "car-13",
+      "name": "Ford Mustang GT",
+      "brand": "Ford",
+      "type": "car",
+      "price": 7461000,
+      "priceFormatted": "₹74,61,000",
+      "mileage": "7.9 km/l",
+      "mileageValue": 7.9,
+      "engine": "4999 cc",
+      "engineCapacity": 4999,
+      "fuelType": "Petrol",
+      "transmission": "10-Speed Automatic",
+      "power": "450 bhp @ 7000 rpm",
+      "torque": "556 Nm @ 4600 rpm",
+      "seatingCapacity": 4,
+      "bodyType": "Coupe",
+      "image": "https://images.unsplash.com/photo-1584345604482-81358878f429?w=600&h=400&fit=crop",
+      "year": 2024,
+      "rating": 4.9,
+      "reviews": 124,
+      "featured": true,
+      "description": "The Ford Mustang GT is an American icon that brings raw V8 power and classic styling to the modern era. With its aggressive stance and legendary performance, it's the ultimate muscle car.",
+      "features": [
+        "Selectable Drive Modes",
+        "Magneride Damping System",
+        "Active Valve Performance Exhaust",
+        "Brembo Brakes",
+        "Sync 3 Infotainment",
+        "B&O Sound System",
+        "Digital Instrument Cluster"
+      ],
+      "specifications": {
+        "dimensions": "4784 x 1916 x 1381 mm",
+        "wheelbase": "2720 mm",
+        "groundClearance": "137 mm",
+        "bootSpace": "382 L",
+        "fuelTankCapacity": "61 L",
+        "kerbWeight": "1725 kg"
+      },
+      "colors": [
+        "Race Red",
+        "Shadow Black",
+        "Velocity Blue",
+        "Oxford White"
+      ]
+    },
+    {
+      "id": "car-14",
+      "name": "Volvo XC90",
+      "brand": "Volvo",
+      "type": "car",
+      "price": 9850000,
+      "priceFormatted": "₹98,50,000",
+      "mileage": "17.2 km/l",
+      "mileageValue": 17.2,
+      "engine": "1969 cc",
+      "engineCapacity": 1969,
+      "fuelType": "Hybrid",
+      "transmission": "8-Speed Automatic",
+      "power": "300 bhp @ 5400 rpm",
+      "torque": "420 Nm @ 2100 rpm",
+      "seatingCapacity": 7,
+      "bodyType": "SUV",
+      "image": "https://images.unsplash.com/photo-1532581133568-18910046638f?w=600&h=400&fit=crop",
+      "year": 2024,
+      "rating": 4.7,
+      "reviews": 89,
+      "featured": false,
+      "description": "The Volvo XC90 is a luxury SUV that prioritizes safety, comfort, and sustainable performance. Its Scandinavian design and premium interiors create a serene environment for family adventures.",
+      "features": [
+        "Pilot Assist",
+        "Panoramic Sunroof",
+        "Bowers & Wilkins Audio",
+        "Air Purifier",
+        "Nappa Leather Seats",
+        "360-Degree Camera",
+        "Head-Up Display"
+      ],
+      "specifications": {
+        "dimensions": "4953 x 1923 x 1776 mm",
+        "wheelbase": "2984 mm",
+        "groundClearance": "238 mm",
+        "bootSpace": "709 L",
+        "fuelTankCapacity": "71 L",
+        "kerbWeight": "2100 kg"
+      },
+      "colors": [
+        "Crystal White",
+        "Onyx Black",
+        "Denim Blue",
+        "Thunder Grey"
+      ]
+    },
+    {
+      "id": "car-15",
+      "name": "Porsche 911 Carrera",
+      "brand": "Porsche",
+      "type": "car",
+      "price": 18500000,
+      "priceFormatted": "₹1,85,00,000",
+      "mileage": "9.0 km/l",
+      "mileageValue": 9.0,
+      "engine": "2981 cc",
+      "engineCapacity": 2981,
+      "fuelType": "Petrol",
+      "transmission": "8-Speed PDK",
+      "power": "380 bhp @ 6500 rpm",
+      "torque": "450 Nm @ 1950 rpm",
+      "seatingCapacity": 2,
+      "bodyType": "Sports",
+      "image": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=400&fit=crop",
+      "year": 2024,
+      "rating": 4.9,
+      "reviews": 156,
+      "featured": true,
+      "description": "The Porsche 911 Carrera is the definitive sports car, offering a timeless design and a driving experience that remains unparalleled. With its rear-engine layout and precision engineering, it's a masterpiece on wheels.",
+      "features": [
+        "Porsche Active Suspension Management",
+        "Sport Chrono Package",
+        "LED Matrix Headlights",
+        "Bose Surround Sound",
+        "Porsche Communication Management",
+        "Adaptive Sport Seats",
+        "ParkAssist with Surround View"
+      ],
+      "specifications": {
+        "dimensions": "4519 x 1852 x 1298 mm",
+        "wheelbase": "2450 mm",
+        "groundClearance": "115 mm",
+        "bootSpace": "132 L",
+        "fuelTankCapacity": "64 L",
+        "kerbWeight": "1505 kg"
+      },
+      "colors": [
+        "Guards Red",
+        "Racing Yellow",
+        "Gentian Blue Metallic",
+        "Crayon"
+      ]
     }
   ],
   "bikes": [
@@ -1126,6 +1302,137 @@
         "Slate Poppy Blue",
         "Kaza Brown"
       ]
+    },
+    {
+      "id": "bike-13",
+      "name": "Yamaha MT-07",
+      "brand": "Yamaha",
+      "type": "bike",
+      "price": 750000,
+      "priceFormatted": "₹7,50,000",
+      "mileage": "24 km/l",
+      "mileageValue": 24,
+      "engine": "689 cc",
+      "engineCapacity": 689,
+      "fuelType": "Petrol",
+      "transmission": "6-Speed Manual",
+      "power": "73.4 bhp @ 8750 rpm",
+      "torque": "67 Nm @ 6500 rpm",
+      "bodyType": "Naked",
+      "image": "https://images.unsplash.com/photo-1547549082-6bc09f2049ae?w=600&h=400&fit=crop",
+      "year": 2024,
+      "rating": 4.6,
+      "reviews": 234,
+      "featured": true,
+      "description": "The Yamaha MT-07 is the ultimate dark side of Japan. With its high-torque CP2 engine and agile handling, it offers an exhilarating ride for both city streets and winding roads.",
+      "features": [
+        "LED Projector Headlight",
+        "LCD Instrument Cluster",
+        "Dual Front Disc Brakes",
+        "Compact Design",
+        "Adjustable Rear Suspension",
+        "Refined Engine"
+      ],
+      "specifications": {
+        "dimensions": "2085 x 780 x 1105 mm",
+        "wheelbase": "1400 mm",
+        "groundClearance": "140 mm",
+        "seatHeight": "805 mm",
+        "fuelTankCapacity": "14 L",
+        "kerbWeight": "184 kg"
+      },
+      "colors": [
+        "Cyan Storm",
+        "Icon Blue",
+        "Tech Black"
+      ]
+    },
+    {
+      "id": "bike-14",
+      "name": "Kawasaki Z900",
+      "brand": "Kawasaki",
+      "type": "bike",
+      "price": 930000,
+      "priceFormatted": "₹9,30,000",
+      "mileage": "18 km/l",
+      "mileageValue": 18,
+      "engine": "948 cc",
+      "engineCapacity": 948,
+      "fuelType": "Petrol",
+      "transmission": "6-Speed Manual",
+      "power": "125 bhp @ 9500 rpm",
+      "torque": "98.6 Nm @ 7700 rpm",
+      "bodyType": "Naked",
+      "image": "https://images.unsplash.com/photo-1568571408018-b2a88439ac1f?w=600&h=400&fit=crop",
+      "year": 2024,
+      "rating": 4.7,
+      "reviews": 189,
+      "featured": false,
+      "description": "The Kawasaki Z900 is a raw and powerful supernaked bike that embodies the Sugomi design philosophy. Its inline-four engine delivers smooth and exhilarating power.",
+      "features": [
+        "KTRC (Kawasaki Traction Control)",
+        "Integrated Riding Modes",
+        "TFT Color Instrumentation",
+        "Smartphone Connectivity",
+        "All-LED Lighting",
+        "Assist & Slipper Clutch"
+      ],
+      "specifications": {
+        "dimensions": "2070 x 825 x 1080 mm",
+        "wheelbase": "1455 mm",
+        "groundClearance": "145 mm",
+        "seatHeight": "820 mm",
+        "fuelTankCapacity": "17 L",
+        "kerbWeight": "212 kg"
+      },
+      "colors": [
+        "Metallic Spark Black",
+        "Candy Persimmon Red",
+        "Metallic Matte Graphene Steel Grey"
+      ]
+    },
+    {
+      "id": "bike-15",
+      "name": "Ducati Panigale V4",
+      "brand": "Ducati",
+      "type": "bike",
+      "price": 2741000,
+      "priceFormatted": "₹27,41,000",
+      "mileage": "13 km/l",
+      "mileageValue": 13,
+      "engine": "1103 cc",
+      "engineCapacity": 1103,
+      "fuelType": "Petrol",
+      "transmission": "6-Speed Manual",
+      "power": "215.5 bhp @ 13000 rpm",
+      "torque": "123.6 Nm @ 9500 rpm",
+      "bodyType": "Sports",
+      "image": "https://images.unsplash.com/photo-1625812183887-83dde2b47a88?w=600&auto=format&fit=crop&q=60",
+      "year": 2024,
+      "rating": 4.9,
+      "reviews": 76,
+      "featured": true,
+      "description": "The Ducati Panigale V4 is the pinnacle of Ducati's superbike technology. Developed with Ducati Corse, it brings MotoGP performance to a production motorcycle.",
+      "features": [
+        "Desmosedici Stradale Engine",
+        "Aero Package with Winglets",
+        "Ohlins NPX 25/30 Pressurized Fork",
+        "Brembo Stylema Brakes",
+        "Ducati Electronic Suspension",
+        "Ducati Data Analyzer"
+      ],
+      "specifications": {
+        "dimensions": "2056 x 750 x 1115 mm",
+        "wheelbase": "1469 mm",
+        "groundClearance": "120 mm",
+        "seatHeight": "850 mm",
+        "fuelTankCapacity": "17 L",
+        "kerbWeight": "198 kg"
+      },
+      "colors": [
+        "Ducati Red"
+      ]
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

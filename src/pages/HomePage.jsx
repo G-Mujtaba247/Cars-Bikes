@@ -17,10 +17,12 @@ export default function HomePage() {
   const featuredCars = cars.filter(c => c.featured);
   const featuredBikes = bikes.filter(b => b.featured);
 
+  const electricVehiclesCount = [...cars, ...bikes].filter(v => v.fuelType === 'Electric').length;
+
   const stats = [
-    { value: '20+', label: 'Vehicles', icon: Car },
-    { value: '10+', label: 'Brands', icon: Award },
-    { value: '4.5', label: 'Avg Rating', icon: Star },
+    { value: `${cars.length + bikes.length}+`, label: 'Vehicles', icon: Car },
+    { value: `${new Set([...cars, ...bikes].map(v => v.brand)).size}+`, label: 'Brands', icon: Award },
+    { value: (([...cars, ...bikes].reduce((acc, v) => acc + v.rating, 0) / ([...cars, ...bikes].length || 1)).toFixed(1)), label: 'Avg Rating', icon: Star },
     { value: '100%', label: 'Free', icon: Shield },
   ];
 
@@ -48,7 +50,7 @@ export default function HomePage() {
       description: 'The future of mobility is here',
       icon: Zap,
       link: '/cars?fuel=Electric',
-      count: 1,
+      count: electricVehiclesCount,
       gradient: 'from-green-500 to-emerald-600',
       bg: 'from-green-500/10 to-emerald-600/10',
     },

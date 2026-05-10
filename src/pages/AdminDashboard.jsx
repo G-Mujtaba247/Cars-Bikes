@@ -18,7 +18,7 @@ import {
   Save,
   Image as ImageIcon
 } from 'lucide-react';
-import * as api from '../services/api';
+
 
 const AdminDashboard = () => {
   const { allVehicles, isLoading, addVehicle, updateVehicle, deleteVehicle, refreshData } = useVehicle();
@@ -92,8 +92,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       if (isEditing) {
-        const updated = await api.updateVehicle(formData);
-        updateVehicle(updated);
+        await updateVehicle(formData);
       } else {
         // Simple ID generation and data structure normalization
         const newId = `${formData.type}-${Date.now()}`;
@@ -118,8 +117,7 @@ const AdminDashboard = () => {
           },
           colors: ["Standard White", "Midnight Black", "Metallic Silver"]
         };
-        const added = await api.addVehicle(newVehicle);
-        addVehicle(added);
+        await addVehicle(newVehicle);
       }
       setIsModalOpen(false);
     } catch (error) {
@@ -131,8 +129,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id, type) => {
     if (window.confirm("Are you sure you want to delete this vehicle?")) {
       try {
-        await api.deleteVehicle(id, type);
-        deleteVehicle(id, type);
+        await deleteVehicle(id, type);
       } catch (error) {
         console.error("Error deleting vehicle:", error);
         alert("Failed to delete vehicle.");

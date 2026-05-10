@@ -6,7 +6,7 @@
   "scripts": {
     "server": "json-server --watch db.json --port 5000",
     "dev:frontend": "node ./node_modules/vite/bin/vite.js --host",
-    "dev": "start npm run server && npm run dev:frontend",
+    "dev": "concurrently \"npm run server\" \"npm run dev:frontend\"",
     "build": "node ./node_modules/vite/bin/vite.js build",
     "lint": "node ./node_modules/eslint/bin/eslint.js .",
     "preview": "node ./node_modules/vite/bin/vite.js preview"

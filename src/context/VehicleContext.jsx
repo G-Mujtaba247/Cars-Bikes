@@ -3,7 +3,7 @@
  * Uses React Context API with useReducer for complex state management
  */
 import { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
-import { fetchCars, fetchBikes } from '../services/api';
+import * as api from '../services/api';
 
 // Initial state for the vehicle context
 const initialState = {
@@ -171,7 +171,7 @@ export function VehicleProvider({ children }) {
   const loadData = useCallback(async () => {
     dispatch({ type: ACTIONS.SET_LOADING, payload: true });
     try {
-      const [cars, bikes] = await Promise.all([fetchCars(), fetchBikes()]);
+      const [cars, bikes] = await Promise.all([api.fetchCars(), api.fetchBikes()]);
       const allVehicles = [...cars, ...bikes];
       dispatch({ type: ACTIONS.SET_DATA, payload: { cars, bikes, allVehicles } });
     } catch (error) {
@@ -240,27 +240,64 @@ export function VehicleProvider({ children }) {
   }, [state.filters]);
   
   // Action creators
-  const setFilter = (filterUpdate) => dispatch({ type: ACTIONS.SET_FILTER, payload: filterUpdate });
-  const resetFilters = () => dispatch({ type: ACTIONS.RESET_FILTERS });
-  const setSearch = (query) => dispatch({ type: ACTIONS.SET_SEARCH, payload: query });
-  const setCategory = (category) => dispatch({ type: ACTIONS.SET_CATEGORY, payload: category });
+  const setFilter = useCallback((filterUpdate) => dispatch({ type: ACTIONS.SET_FILTER, payload: filterUpdate }), []);
+  const resetFilters = useCallback(() => dispatch({ type: ACTIONS.RESET_FILTERS }), []);
+  const setSearch = useCallback((query) => dispatch({ type: ACTIONS.SET_SEARCH, payload: query }), []);
+  const setCategory = useCallback((category) => dispatch({ type: ACTIONS.SET_CATEGORY, payload: category }), []);
   
-  const addToCompare = (vehicle) => {
+  const addToCompare = useCallback((vehicle) => {
     if (state.comparisonList.length >= 2) {
       alert('You can compare up to 2 vehicles at a time. Remove one to add another.');
       return;
     }
     dispatch({ type: ACTIONS.ADD_TO_COMPARE, payload: vehicle });
-  };
+  }, [state.comparisonList]);
   
-  const removeFromCompare = (vehicleId) => dispatch({ type: ACTIONS.REMOVE_FROM_COMPARE, payload: vehicleId });
-  const clearComparison = () => dispatch({ type: ACTIONS.CLEAR_COMPARISON });
+  const removeFromCompare = useCallback((vehicleId) => dispatch({ type: ACTIONS.REMOVE_FROM_COMPARE, payload: vehicleId }), []);
+  const clearComparison = useCallback(() => dispatch({ type: ACTIONS.CLEAR_COMPARISON }), []);
   
-  const isInComparison = (vehicleId) => state.comparisonList.some(v => v.id === vehicleId);
+  const isInComparison = useCallback((vehicleId) => state.comparisonList.some(v => v.id === vehicleId), [state.comparisonList]);
   
-  const addVehicleAction = (vehicle) => dispatch({ type: ACTIONS.ADD_VEHICLE, payload: vehicle });
-  const updateVehicleAction = (vehicle) => dispatch({ type: ACTIONS.UPDATE_VEHICLE, payload: vehicle });
-  const deleteVehicleAction = (id, type) => dispatch({ type: ACTIONS.DELETE_VEHICLE, payload: { id, type } });
+  const addVehicleAction = useCallback(async (vehicle) => {
+    dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+    try {
+      const added = await api.addVehicle(vehicle);
+      dispatch({ type: ACTIONS.ADD_VEHICLE, payload: added });
+      return added;
+    } catch (error) {
+      console.error("Failed to add vehicle:", error);
+      throw error;
+    } finally {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+    }
+  }, []);
+
+  const updateVehicleAction = useCallback(async (vehicle) => {
+    dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+    try {
+      const updated = await api.updateVehicle(vehicle);
+      dispatch({ type: ACTIONS.UPDATE_VEHICLE, payload: updated });
+      return updated;
+    } catch (error) {
+      console.error("Failed to update vehicle:", error);
+      throw error;
+    } finally {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+    }
+  }, []);
+
+  const deleteVehicleAction = useCallback(async (id, type) => {
+    dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+    try {
+      await api.deleteVehicle(id, type);
+      dispatch({ type: ACTIONS.DELETE_VEHICLE, payload: { id, type } });
+    } catch (error) {
+      console.error("Failed to delete vehicle:", error);
+      throw error;
+    } finally {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+    }
+  }, []);
 
   const value = {
     ...state,
