@@ -35,3 +35,10 @@ export const deleteVehicle = async (id, type) => {
   return response.data;
 };
 
+export const login = async (username, password) => {
+  const response = await axios.get(`${API_URL}/users`, {
+    params: { username, password }
+  });
+  return response.data;
+};
+

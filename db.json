@@ -1434,5 +1434,13 @@
       ]
     }
   ],
+  "users": [
+    {
+      "id": "admin-1",
+      "username": "mujtabaofficial247",
+      "password": "password247",
+      "role": "admin"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

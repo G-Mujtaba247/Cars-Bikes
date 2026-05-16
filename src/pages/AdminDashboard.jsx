@@ -16,12 +16,15 @@ import {
   AlertCircle,
   X,
   Save,
-  Image as ImageIcon
+  Image as ImageIcon,
+  LogOut
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 
 const AdminDashboard = () => {
   const { allVehicles, isLoading, addVehicle, updateVehicle, deleteVehicle, refreshData } = useVehicle();
+  const { logout, user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -146,13 +149,27 @@ const AdminDashboard = () => {
             <h1 className="text-3xl font-bold text-white mb-2 font-display">Inventory Management</h1>
             <p className="text-gray-400">Manage your vehicle listings and stock levels</p>
           </div>
-          <button 
-            onClick={() => handleOpenModal()}
-            className="btn-gradient flex items-center justify-center gap-2"
-          >
-            <Plus size={20} />
-            <span>Add New Vehicle</span>
-          </button>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex flex-col items-end mr-2">
+              <span className="text-sm font-medium text-white">{user?.username}</span>
+              <span className="text-xs text-gray-500">Administrator</span>
+            </div>
+            <button 
+              onClick={() => handleOpenModal()}
+              className="btn-gradient flex items-center justify-center gap-2"
+            >
+              <Plus size={20} />
+              <span className="hidden sm:inline">Add New Vehicle</span>
+              <span className="sm:hidden">Add</span>
+            </button>
+            <button 
+              onClick={logout}
+              className="p-3 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-red-400 hover:border-red-400/30 hover:bg-red-400/10 transition-all duration-300"
+              title="Logout"
+            >
+              <LogOut size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Stats Grid */}
