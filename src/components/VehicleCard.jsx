@@ -5,7 +5,7 @@
 import { Link } from 'react-router-dom';
 import { Fuel, Gauge, Settings, Star, GitCompare, Check, IndianRupee } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
-import { formatPrice } from '../data/vehicles';
+import { formatPrice } from '../utils/vehicles';
 
 export default function VehicleCard({ vehicle, index = 0 }) {
   const { addToCompare, removeFromCompare, isInComparison } = useVehicle();

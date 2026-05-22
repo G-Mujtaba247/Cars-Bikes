@@ -6,7 +6,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User, Sparkles, ChevronDown } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
-import { formatPrice } from '../data/vehicles';
+import { formatPrice } from '../utils/vehicles';
 
 // Simple AI response engine using local vehicle data
 function generateResponse(message, carsData, bikesData, allVehicles) {
