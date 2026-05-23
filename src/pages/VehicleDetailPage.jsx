@@ -8,7 +8,7 @@ import {
   ArrowLeft, Star, Fuel, Gauge, Settings, Zap, GitCompare, Check,
   Calendar, Users, Layers, Weight, Droplets, ChevronRight, Share2, Heart
 } from 'lucide-react';
-import { formatPrice } from '../data/vehicles';
+import { formatPrice } from '../utils/vehicles';
 import { useVehicle } from '../context/VehicleContext';
 import VehicleCard from '../components/VehicleCard';
 

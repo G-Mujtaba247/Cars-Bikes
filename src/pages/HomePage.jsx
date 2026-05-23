@@ -8,7 +8,6 @@ import { ArrowRight, Car, Bike, Zap, Shield, Award, TrendingUp, ChevronRight, St
 import SearchBar from '../components/SearchBar';
 import VehicleCard from '../components/VehicleCard';
 import { useVehicle } from '../context/VehicleContext';
-import { formatPrice } from '../utils/vehicles';
 
 export default function HomePage() {
   const { cars, bikes } = useVehicle();
