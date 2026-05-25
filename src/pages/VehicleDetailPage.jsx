@@ -12,6 +12,76 @@ import { formatPrice } from '../utils/vehicles';
 import { useVehicle } from '../context/VehicleContext';
 import VehicleCard from '../components/VehicleCard';
 
+// Extends specs parsing utility
+function parseNumber(str) {
+  if (!str) return 0;
+  const match = String(str).match(/([0-9.]+)/);
+  return match ? parseFloat(match[1]) : 0;
+}
+
+// Custom Cockpit circular dashboard spec dial gauge
+function DashboardDial({ value, max, label, unit, colorClass, icon: Icon }) {
+  const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+  const radius = 38;
+  const circumference = 2 * Math.PI * radius;
+  // Sweep is 270 degrees (3/4 of a circle)
+  const activeLength = circumference * 0.75;
+  const strokeDashoffset = circumference - (percentage / 100) * activeLength;
+
+  return (
+    <div className="flex flex-col items-center p-5 bg-black/45 backdrop-blur-xl border border-white/5 rounded-2xl relative overflow-hidden group hover:border-primary-500/25 transition-all duration-350">
+      {/* Visual background gradient glow on hover */}
+      <div className="absolute inset-0 bg-gradient-to-t from-primary-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      {/* Dial SVG */}
+      <div className="relative w-28 h-28 flex items-center justify-center">
+        <svg className="w-full h-full transform -rotate-[225deg]" viewBox="0 0 100 100">
+          {/* Base track (grey background circle with 90deg gap) */}
+          <circle
+            cx="50"
+            cy="50"
+            r={radius}
+            stroke="#161f30"
+            strokeWidth="7"
+            fill="transparent"
+            strokeDasharray={circumference}
+            strokeDashoffset={circumference * 0.25}
+            strokeLinecap="round"
+          />
+          {/* Active sweeping needle */}
+          <circle
+            cx="50"
+            cy="50"
+            r={radius}
+            stroke="var(--color-primary-500)"
+            strokeWidth="7"
+            fill="transparent"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            className="transition-all duration-1000 ease-out"
+          />
+        </svg>
+
+        {/* Center digital values */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+          {Icon && <Icon className={`w-4 h-4 ${colorClass} mb-0.5`} />}
+          <span className="text-base font-extrabold text-white font-display">
+            {value ? value.toFixed(1).replace('.0', '') : '0'}
+          </span>
+          <span className="text-[9px] text-gray-500 font-bold uppercase tracking-wider">
+            {unit}
+          </span>
+        </div>
+      </div>
+
+      <span className="mt-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+        {label}
+      </span>
+    </div>
+  );
+}
+
 export default function VehicleDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -51,6 +121,15 @@ export default function VehicleDetailPage() {
 
   const inComparison = isInComparison(vehicle.id);
   const isCar = vehicle.type === 'car';
+
+  const powerNum = parseNumber(vehicle.power);
+  const torqueNum = parseNumber(vehicle.torque);
+  // Parse mileage number, falling back to mileageValue if defined
+  const mileageNum = vehicle.mileageValue || parseNumber(vehicle.mileage);
+
+  const maxPower = isCar ? Math.max(500, powerNum) : Math.max(220, powerNum);
+  const maxTorque = isCar ? Math.max(600, torqueNum) : Math.max(150, torqueNum);
+  const maxMileage = isCar ? Math.max(35, mileageNum) : Math.max(80, mileageNum);
 
   // Overview specs
   const overviewSpecs = [
@@ -205,6 +284,49 @@ export default function VehicleDetailPage() {
                 </Link>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* ===================== PERFORMANCE COCKPIT INSTRUMENT PANEL ===================== */}
+        <div className="carbon-texture p-6 sm:p-8 rounded-3xl mb-12 relative overflow-hidden headlight-glow">
+          {/* Dashboard bezel rivets */}
+          <div className="absolute top-4 left-4 w-1.5 h-1.5 rounded-full bg-white/10" />
+          <div className="absolute top-4 right-4 w-1.5 h-1.5 rounded-full bg-white/10" />
+          <div className="absolute bottom-4 left-4 w-1.5 h-1.5 rounded-full bg-white/10" />
+          <div className="absolute bottom-4 right-4 w-1.5 h-1.5 rounded-full bg-white/10" />
+          
+          <div className="absolute inset-0 bg-mesh opacity-10" />
+
+          <h2 className="text-sm font-extrabold font-display text-white mb-6 flex items-center gap-2 px-1 relative z-10 uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse-slow" />
+            Performance Instrument Cluster
+          </h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 relative z-10">
+            <DashboardDial
+              value={powerNum}
+              max={maxPower}
+              label="Engine Power"
+              unit="BHP"
+              colorClass="text-yellow-400"
+              icon={Zap}
+            />
+            <DashboardDial
+              value={torqueNum}
+              max={maxTorque}
+              label="Engine Torque"
+              unit="Nm"
+              colorClass="text-orange-400"
+              icon={Settings}
+            />
+            <DashboardDial
+              value={mileageNum}
+              max={maxMileage}
+              label={vehicle.fuelType === 'Electric' ? 'Battery Range' : 'Fuel Efficiency'}
+              unit={vehicle.fuelType === 'Electric' ? 'km/chg' : 'km/l'}
+              colorClass="text-green-400"
+              icon={Gauge}
+            />
           </div>
         </div>
 

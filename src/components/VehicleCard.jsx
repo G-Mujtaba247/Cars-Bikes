@@ -16,7 +16,9 @@ export default function VehicleCard({ vehicle, index = 0 }) {
 
   return (
     <div
-      className="glass-card-hover group relative overflow-hidden animate-fade-in"
+      className={`glass-card-hover group relative overflow-hidden animate-fade-in ${
+        vehicle.type === 'car' ? 'hover:headlight-glow' : 'hover:taillight-glow'
+      }`}
       style={{ animationDelay }}
     >
       {/* Image Container */}

@@ -4,12 +4,25 @@
  */
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Car, Bike, GitCompare, MessageCircle, Home, Search, BookOpen, LayoutDashboard } from 'lucide-react';
+import { Menu, X, Car, Bike, GitCompare, MessageCircle, Home, Search, BookOpen, LayoutDashboard, Palette } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
+
+const themes = [
+  { id: 'fusion', label: 'Carbon Fusion', primaryColor: '#6366f1', accentColor: '#d946ef', class: '' },
+  { id: 'red', label: 'Sport Red', primaryColor: '#ef4444', accentColor: '#f43f5e', class: 'theme-red' },
+  { id: 'cyan', label: 'Electric Cyan', primaryColor: '#06b6d4', accentColor: '#3b82f6', class: 'theme-cyan' },
+  { id: 'green', label: 'Acid Green', primaryColor: '#84cc16', accentColor: '#22c55e', class: 'theme-green' },
+  { id: 'gold', label: 'Gold Prestige', primaryColor: '#f59e0b', accentColor: '#dd6b20', class: 'theme-gold' },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showThemePanel, setShowThemePanel] = useState(false);
+  const [activeTheme, setActiveTheme] = useState(() => {
+    return localStorage.getItem('showroom-theme') || 'fusion';
+  });
+  
   const location = useLocation();
   const { comparisonList } = useVehicle();
 
@@ -20,9 +33,20 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close menu on route change
+  // Sync active theme to HTML class
+  useEffect(() => {
+    document.documentElement.classList.remove('theme-red', 'theme-cyan', 'theme-green', 'theme-gold');
+    const selectedTheme = themes.find(t => t.id === activeTheme);
+    if (selectedTheme && selectedTheme.class) {
+      document.documentElement.classList.add(selectedTheme.class);
+    }
+    localStorage.setItem('showroom-theme', activeTheme);
+  }, [activeTheme]);
+
+  // Close menu and theme panel on route change
   useEffect(() => {
     setIsOpen(false);
+    setShowThemePanel(false);
   }, [location]);
 
   const navLinks = [
@@ -87,14 +111,68 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Desktop Search Icon */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Desktop Search & Theme Configurator */}
+          <div className="hidden md:flex items-center gap-3 relative">
             <Link
               to="/cars"
               className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-300"
             >
               <Search className="w-5 h-5" />
             </Link>
+
+            {/* Accent Theme Swatcher */}
+            <div className="relative">
+              <button
+                onClick={() => setShowThemePanel(!showThemePanel)}
+                className={`p-2 rounded-xl transition-all duration-300 ${
+                  showThemePanel
+                    ? 'bg-primary-500/20 text-primary-300'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
+                title="Showroom Configurator"
+              >
+                <Palette className="w-5 h-5" />
+              </button>
+
+              {showThemePanel && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShowThemePanel(false)} />
+                  <div className="absolute right-0 mt-3 w-56 bg-dark-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-4 z-50 animate-slide-down">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                      Showroom Accent
+                    </p>
+                    <div className="space-y-1.5">
+                      {themes.map((theme) => (
+                        <button
+                          key={theme.id}
+                          onClick={() => {
+                            setActiveTheme(theme.id);
+                            setShowThemePanel(false);
+                          }}
+                          className={`w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition-all duration-200 text-left ${
+                            activeTheme === theme.id
+                              ? 'bg-primary-500/10 border border-primary-500/20 text-white'
+                              : 'text-gray-300 border border-transparent'
+                          }`}
+                        >
+                          <div className="flex">
+                            <span
+                              className="w-4 h-4 rounded-full border border-white/15"
+                              style={{ backgroundColor: theme.primaryColor }}
+                            />
+                            <span
+                              className="w-4 h-4 rounded-full border border-white/15 -ml-2"
+                              style={{ backgroundColor: theme.accentColor }}
+                            />
+                          </div>
+                          <span className="text-sm font-medium">{theme.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -111,7 +189,7 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div
         className={`md:hidden transition-all duration-300 overflow-hidden ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="bg-dark-900/95 backdrop-blur-xl border-t border-white/10 px-4 py-4 space-y-2">
@@ -136,6 +214,41 @@ export default function Navbar() {
               )}
             </Link>
           ))}
+
+          {/* Mobile Theme Selector */}
+          <div className="border-t border-white/5 pt-4 mt-2">
+            <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-2 px-1">
+              Showroom Accent Theme
+            </p>
+            <div className="grid grid-cols-5 gap-1.5">
+              {themes.map((theme) => (
+                <button
+                  key={theme.id}
+                  onClick={() => setActiveTheme(theme.id)}
+                  className={`flex flex-col items-center justify-center p-2 rounded-xl border transition-all duration-300 ${
+                    activeTheme === theme.id
+                      ? 'bg-primary-500/20 border-primary-500/50 text-white'
+                      : 'border-white/5 bg-white/5 text-gray-400 hover:text-white'
+                  }`}
+                  title={theme.label}
+                >
+                  <div className="flex mb-1">
+                    <span
+                      className="w-3 h-3 rounded-full border border-white/15"
+                      style={{ backgroundColor: theme.primaryColor }}
+                    />
+                    <span
+                      className="w-3 h-3 rounded-full border border-white/15 -ml-1.5"
+                      style={{ backgroundColor: theme.accentColor }}
+                    />
+                  </div>
+                  <span className="text-[8px] truncate max-w-full font-medium">
+                    {theme.label.split(' ')[1] || theme.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </nav>
