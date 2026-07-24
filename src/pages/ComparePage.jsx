@@ -254,7 +254,7 @@ function DragStripSimulation({ vehicleA, vehicleB }) {
 }
 
 export default function ComparePage() {
-  const { comparisonList, addToCompare, clearComparison, allVehicles } = useVehicle();
+  const { comparisonList, addToCompare, clearComparison, allVehicles, error, isLoading } = useVehicle();
   const [showSelector, setShowSelector] = useState(false);
   const [selectorSearch, setSelectorSearch] = useState('');
 
@@ -266,6 +266,18 @@ export default function ComparePage() {
         v.brand.toLowerCase().includes(q))
     );
   });
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-900 pt-20">
+        <div className="glass-card p-8 text-center max-w-md">
+          <h2 className="text-2xl font-bold text-red-400 mb-2">Error Loading Data</h2>
+          <p className="text-gray-400 mb-6">{error}</p>
+          <button onClick={() => window.location.reload()} className="btn-gradient">Retry</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-24 pb-16">

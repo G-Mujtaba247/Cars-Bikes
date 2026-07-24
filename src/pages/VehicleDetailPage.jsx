@@ -85,7 +85,7 @@ function DashboardDial({ value, max, label, unit, colorClass, icon: Icon }) {
 export default function VehicleDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { allVehicles, addToCompare, removeFromCompare, isInComparison, isLoading } = useVehicle();
+  const { allVehicles, addToCompare, removeFromCompare, isInComparison, isLoading, error } = useVehicle();
   const [vehicle, setVehicle] = useState(null);
   const [similarVehicles, setSimilarVehicles] = useState([]);
   const [activeSpecTab, setActiveSpecTab] = useState('overview');
@@ -108,7 +108,19 @@ export default function VehicleDetailPage() {
     }
     // Scroll to top on vehicle change
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id, navigate, allVehicles, isLoading]);
+  }, [id, navigate, allVehicles, isLoading, error]);
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-900 pt-20">
+        <div className="glass-card p-8 text-center max-w-md">
+          <h2 className="text-2xl font-bold text-red-400 mb-2">Error Loading Vehicle</h2>
+          <p className="text-gray-400 mb-6">{error}</p>
+          <button onClick={() => navigate('/')} className="btn-gradient">Back to Home</button>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading || !vehicle) {
     return (

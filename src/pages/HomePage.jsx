@@ -10,8 +10,28 @@ import VehicleCard from '../components/VehicleCard';
 import { useVehicle } from '../context/VehicleContext';
 
 export default function HomePage() {
-  const { cars, bikes } = useVehicle();
+  const { cars, bikes, error, isLoading } = useVehicle();
   const [activeTab, setActiveTab] = useState('all');
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-900 pt-20">
+        <div className="glass-card p-8 text-center max-w-md">
+          <h2 className="text-2xl font-bold text-red-400 mb-2">Error Loading Data</h2>
+          <p className="text-gray-400 mb-6">{error}</p>
+          <button onClick={() => window.location.reload()} className="btn-gradient">Retry</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-900">
+        <div className="w-12 h-12 rounded-full border-2 border-primary-500/30 border-t-primary-500 animate-spin" />
+      </div>
+    );
+  }
 
   const featuredCars = cars.filter(c => c.featured);
   const featuredBikes = bikes.filter(b => b.featured);

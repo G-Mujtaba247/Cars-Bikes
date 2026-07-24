@@ -23,18 +23,25 @@ This project demonstrates strong React development skills, component architectur
 
 ## 🚀 How to Run the Project
 
-To run this project locally, simply use the `npm run dev` command in your terminal. Follow these steps:
+To run this project locally, follow these steps:
 
 1. **Install dependencies** (if you haven't already):
    ```bash
    npm install
    ```
 
-2. **Start the development server**:
+2. **Environment Configuration**:
+   Create a `.env` file in the root directory by copying the `.env.example` file, or set the API URL directly:
+   ```bash
+   cp .env.example .env
+   ```
+   Ensure `VITE_API_URL` points to your local JSON server (default is `http://localhost:5000`).
+
+3. **Start the development server**:
    Run the following command in your terminal:
    ```bash
    npm run dev
    ```
 
-3. **View the app**:
+4. **View the app**:
    Open the Local URL provided in your terminal (usually `http://localhost:5173`) in your web browser.

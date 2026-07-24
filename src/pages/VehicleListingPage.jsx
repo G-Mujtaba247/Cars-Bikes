@@ -11,7 +11,7 @@ import FilterSidebar from '../components/FilterSidebar';
 import SearchBar from '../components/SearchBar';
 
 export default function VehicleListingPage({ type = 'car' }) {
-  const { filteredVehicles, setCategory, setSearch, filters } = useVehicle();
+  const { filteredVehicles, setCategory, setSearch, filters, error, isLoading } = useVehicle();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchParams] = useSearchParams();
   const vehiclesPerPage = 8;
@@ -42,6 +42,26 @@ export default function VehicleListingPage({ type = 'car' }) {
   };
 
   const isCar = type === 'car';
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-900 pt-20">
+        <div className="glass-card p-8 text-center max-w-md">
+          <h2 className="text-2xl font-bold text-red-400 mb-2">Error Loading Vehicles</h2>
+          <p className="text-gray-400 mb-6">{error}</p>
+          <button onClick={() => window.location.reload()} className="btn-gradient">Retry</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading && filteredVehicles.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark-900">
+        <div className="w-12 h-12 rounded-full border-2 border-primary-500/30 border-t-primary-500 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-24 pb-16">

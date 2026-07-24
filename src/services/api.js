@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export const fetchCars = async () => {
   const response = await axios.get(`${API_URL}/cars`);
@@ -36,9 +36,12 @@ export const deleteVehicle = async (id, type) => {
 };
 
 export const login = async (username, password) => {
-  const response = await axios.get(`${API_URL}/users`, {
-    params: { username, password }
-  });
-  return response.data;
+  // Note: json-server doesn't support POST for auth by default without custom routes.
+  // To avoid sending password in URL query, we fetch users by username and verify password locally.
+  // WARNING: This is only for demonstration. A real backend should use POST and hash passwords.
+  const response = await axios.get(`${API_URL}/users?username=${username}`);
+  const users = response.data;
+  const user = users.find(u => u.password === password);
+  return user ? [user] : [];
 };
 

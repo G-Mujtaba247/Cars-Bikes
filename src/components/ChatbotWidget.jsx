@@ -1,14 +1,14 @@
 /**
- * ChatbotWidget Component - AI-powered vehicle recommendation chatbot
+ * ChatbotWidget Component - Smart vehicle recommendation assistant
  * Features: Floating widget, message history, quick action buttons, vehicle recommendations
- * Uses local vehicle data intelligence (no external API dependency)
+ * Uses local vehicle data intelligence (rule-based local logic)
  */
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User, Sparkles, ChevronDown } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
 import { formatPrice } from '../utils/vehicles';
 
-// Simple AI response engine using local vehicle data
+// Simple response engine using local vehicle data
 function generateResponse(message, carsData, bikesData, allVehicles) {
   const msg = message.toLowerCase().trim();
 
@@ -128,7 +128,7 @@ function generateResponse(message, carsData, bikesData, allVehicles) {
   // Greetings
   if (msg.match(/^(hi|hello|hey|howdy|greetings)/)) {
     return {
-      text: "Hello! 👋 I'm your AI vehicle assistant. I can help you with:\n\n• Finding the best cars or bikes in your budget\n• Comparing vehicles side-by-side\n• Recommending fuel-efficient vehicles\n• Finding SUVs, sports bikes, and more!\n\nTry asking: 'Best bike under 3 lakh' or 'Compare Honda Civic and BMW 3 Series'",
+      text: "Hello! 👋 I'm your Smart Vehicle Assistant. I can help you with:\n\n• Finding the best cars or bikes in your budget\n• Comparing vehicles side-by-side\n• Recommending fuel-efficient vehicles\n• Finding SUVs, sports bikes, and more!\n\nTry asking: 'Best bike under 3 lakh' or 'Compare Honda Civic and BMW 3 Series'",
     };
   }
 
@@ -151,7 +151,7 @@ export default function ChatbotWidget() {
   const [messages, setMessages] = useState([
     {
       type: 'bot',
-      text: "Hi! 👋 I'm your AI Vehicle Assistant. Ask me about cars and bikes!\n\nTry: 'Best bike under 3 lakh' or 'Help'",
+      text: "Hi! 👋 I'm your Smart Vehicle Assistant. Ask me about cars and bikes!\n\nTry: 'Best bike under 3 lakh' or 'Help'",
       timestamp: new Date(),
     },
   ]);
@@ -185,7 +185,7 @@ export default function ChatbotWidget() {
     setInput('');
     setIsTyping(true);
 
-    // Simulate AI thinking delay
+    // Simulate processing delay
     setTimeout(() => {
       const response = generateResponse(userMessage.text, cars, bikes, allVehicles);
       const botMessage = {
@@ -250,7 +250,7 @@ export default function ChatbotWidget() {
                 <Bot className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm font-bold text-white">AI Vehicle Assistant</h3>
+                <h3 className="text-sm font-bold text-white">Smart Vehicle Assistant</h3>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                   <span className="text-xs text-green-400">Online</span>

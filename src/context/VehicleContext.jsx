@@ -31,6 +31,7 @@ const initialState = {
   
   // UI state
   isLoading: false,
+  error: null,
   activeCategory: 'all',
 };
 
@@ -49,6 +50,7 @@ const ACTIONS = {
   ADD_VEHICLE: 'ADD_VEHICLE',
   UPDATE_VEHICLE: 'UPDATE_VEHICLE',
   DELETE_VEHICLE: 'DELETE_VEHICLE',
+  SET_ERROR: 'SET_ERROR',
 };
 
 // Reducer function
@@ -110,6 +112,13 @@ function vehicleReducer(state, action) {
         ...state,
         isLoading: action.payload,
       };
+      
+    case ACTIONS.SET_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
     case ACTIONS.SET_DATA:
       return {
         ...state,
@@ -170,12 +179,14 @@ export function VehicleProvider({ children }) {
   // Fetch data on mount
   const loadData = useCallback(async () => {
     dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+    dispatch({ type: ACTIONS.SET_ERROR, payload: null });
     try {
       const [cars, bikes] = await Promise.all([api.fetchCars(), api.fetchBikes()]);
       const allVehicles = [...cars, ...bikes];
       dispatch({ type: ACTIONS.SET_DATA, payload: { cars, bikes, allVehicles } });
     } catch (error) {
       console.error("Failed to fetch vehicles:", error);
+      dispatch({ type: ACTIONS.SET_ERROR, payload: error.message || 'Failed to fetch vehicles' });
     } finally {
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
