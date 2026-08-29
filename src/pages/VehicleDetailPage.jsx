@@ -89,7 +89,6 @@ export default function VehicleDetailPage() {
   const [vehicle, setVehicle] = useState(null);
   const [similarVehicles, setSimilarVehicles] = useState([]);
   const [activeSpecTab, setActiveSpecTab] = useState('overview');
-  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     if (isLoading) return;
