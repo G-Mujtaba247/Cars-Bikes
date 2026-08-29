@@ -85,7 +85,7 @@ function DashboardDial({ value, max, label, unit, colorClass, icon: Icon }) {
 export default function VehicleDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { allVehicles, addToCompare, removeFromCompare, isInComparison, isLoading, error } = useVehicle();
+  const { allVehicles, addToCompare, removeFromCompare, isInComparison, isLoading, error, toggleFavorite, isFavorite } = useVehicle();
   const [vehicle, setVehicle] = useState(null);
   const [similarVehicles, setSimilarVehicles] = useState([]);
   const [activeSpecTab, setActiveSpecTab] = useState('overview');
@@ -132,6 +132,7 @@ export default function VehicleDetailPage() {
   }
 
   const inComparison = isInComparison(vehicle.id);
+  const liked = isFavorite(vehicle.id);
   const isCar = vehicle.type === 'car';
 
   const powerNum = parseNumber(vehicle.power);
@@ -205,12 +206,13 @@ export default function VehicleDetailPage() {
                 {/* Action Buttons */}
                 <div className="absolute top-4 right-4 flex gap-2">
                   <button
-                    onClick={() => setLiked(!liked)}
+                    onClick={() => toggleFavorite(vehicle)}
                     className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                       liked
                         ? 'bg-red-500/20 text-red-400 border border-red-500/30'
                         : 'bg-black/40 backdrop-blur-sm text-white/70 hover:bg-white/20'
                     }`}
+                    aria-label={liked ? 'Remove from wishlist' : 'Save to wishlist'}
                   >
                     <Heart className={`w-5 h-5 ${liked ? 'fill-red-400' : ''}`} />
                   </button>

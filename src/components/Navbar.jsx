@@ -4,7 +4,7 @@
  */
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Car, Bike, GitCompare, MessageCircle, Home, Search, BookOpen, LayoutDashboard, Palette } from 'lucide-react';
+import { Menu, X, Car, Bike, GitCompare, MessageCircle, Home, Search, BookOpen, LayoutDashboard, Palette, Heart } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
 
 const themes = [
@@ -24,7 +24,7 @@ export default function Navbar() {
   });
   
   const location = useLocation();
-  const { comparisonList } = useVehicle();
+  const { comparisonList, favorites } = useVehicle();
 
   // Handle scroll effect
   useEffect(() => {
@@ -53,6 +53,7 @@ export default function Navbar() {
     { path: '/', label: 'Home', icon: Home },
     { path: '/cars', label: 'Cars', icon: Car },
     { path: '/bikes', label: 'Bikes', icon: Bike },
+    { path: '/favorites', label: 'Wishlist', icon: Heart, badge: favorites.length },
     { path: '/compare', label: 'Compare', icon: GitCompare, badge: comparisonList.length },
     { path: '/resources', label: 'Resources', icon: BookOpen },
     { path: '/admin', label: 'Admin', icon: LayoutDashboard },

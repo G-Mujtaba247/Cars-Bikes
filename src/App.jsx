@@ -20,6 +20,7 @@ const BuyingGuidePage = lazy(() => import('./pages/BuyingGuidePage'));
 const ReviewsPage = lazy(() => import('./pages/ReviewsPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
 const ContactUsPage = lazy(() => import('./pages/ContactUsPage'));
+const FavoritesPage = lazy(() => import('./pages/FavoritesPage'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 
@@ -80,6 +81,7 @@ function App() {
                   <Route path="/bikes" element={<VehicleListingPage type="bike" />} />
                   <Route path="/vehicle/:id" element={<VehicleDetailPage />} />
                   <Route path="/compare" element={<ComparePage />} />
+                  <Route path="/favorites" element={<FavoritesPage />} />
                   <Route path="/resources" element={<ResourcesPage />} />
                   <Route path="/buying-guide" element={<BuyingGuidePage />} />
                   <Route path="/reviews" element={<ReviewsPage />} />

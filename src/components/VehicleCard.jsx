@@ -3,13 +3,14 @@
  * Features: Hover effects, comparison toggle, price formatting, rating display
  */
 import { Link } from 'react-router-dom';
-import { Fuel, Gauge, Settings, Star, GitCompare, Check, IndianRupee } from 'lucide-react';
+import { Fuel, Gauge, Settings, Star, GitCompare, Check, IndianRupee, Heart } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
 import { formatPrice } from '../utils/vehicles';
 
 export default function VehicleCard({ vehicle, index = 0 }) {
-  const { addToCompare, removeFromCompare, isInComparison } = useVehicle();
+  const { addToCompare, removeFromCompare, isInComparison, toggleFavorite, isFavorite } = useVehicle();
   const inComparison = isInComparison(vehicle.id);
+  const liked = isFavorite(vehicle.id);
 
   // Staggered animation delay based on index
   const animationDelay = `${index * 100}ms`;
@@ -39,22 +40,41 @@ export default function VehicleCard({ vehicle, index = 0 }) {
           </span>
         </div>
 
-        {/* Compare Button */}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            inComparison ? removeFromCompare(vehicle.id) : addToCompare(vehicle);
-          }}
-          className={`absolute top-3 right-3 w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
-            inComparison
-              ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-              : 'bg-black/40 backdrop-blur-sm text-white/70 hover:bg-white/20 hover:text-white'
-          }`}
-          title={inComparison ? 'Remove from comparison' : 'Add to comparison'}
-        >
-          {inComparison ? <Check className="w-4 h-4" /> : <GitCompare className="w-4 h-4" />}
-        </button>
+        {/* Compare / Favorite Buttons */}
+        <div className="absolute top-3 right-3 flex gap-2">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleFavorite(vehicle);
+            }}
+            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
+              liked
+                ? 'bg-red-500/20 text-red-300 border border-red-500/30'
+                : 'bg-black/40 backdrop-blur-sm text-white/70 hover:bg-white/20 hover:text-white'
+            }`}
+            title={liked ? 'Remove from wishlist' : 'Save to wishlist'}
+            aria-label={liked ? 'Remove from wishlist' : 'Save to wishlist'}
+          >
+            <Heart className={`w-4 h-4 ${liked ? 'fill-red-400' : ''}`} />
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              inComparison ? removeFromCompare(vehicle.id) : addToCompare(vehicle);
+            }}
+            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
+              inComparison
+                ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
+                : 'bg-black/40 backdrop-blur-sm text-white/70 hover:bg-white/20 hover:text-white'
+            }`}
+            title={inComparison ? 'Remove from comparison' : 'Add to comparison'}
+          >
+            {inComparison ? <Check className="w-4 h-4" /> : <GitCompare className="w-4 h-4" />}
+          </button>
+        </div>
 
         {/* Rating */}
         <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg">

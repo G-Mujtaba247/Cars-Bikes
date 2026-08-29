@@ -11,6 +11,9 @@ const initialState = {
   cars: [],
   bikes: [],
   allVehicles: [],
+
+  // Saved items
+  favorites: [],
   
   // Filtered results
   filteredVehicles: [],
@@ -44,6 +47,9 @@ const ACTIONS = {
   ADD_TO_COMPARE: 'ADD_TO_COMPARE',
   REMOVE_FROM_COMPARE: 'REMOVE_FROM_COMPARE',
   CLEAR_COMPARISON: 'CLEAR_COMPARISON',
+  TOGGLE_FAVORITE: 'TOGGLE_FAVORITE',
+  CLEAR_FAVORITES: 'CLEAR_FAVORITES',
+  LOAD_FAVORITES: 'LOAD_FAVORITES',
   SET_FILTERED_VEHICLES: 'SET_FILTERED_VEHICLES',
   SET_LOADING: 'SET_LOADING',
   SET_DATA: 'SET_DATA',
@@ -99,6 +105,29 @@ function vehicleReducer(state, action) {
       return {
         ...state,
         comparisonList: [],
+      };
+
+    case ACTIONS.TOGGLE_FAVORITE: {
+      const vehicle = action.payload;
+      const exists = state.favorites.some(v => v.id === vehicle.id);
+      return {
+        ...state,
+        favorites: exists
+          ? state.favorites.filter(v => v.id !== vehicle.id)
+          : [...state.favorites, vehicle],
+      };
+    }
+
+    case ACTIONS.CLEAR_FAVORITES:
+      return {
+        ...state,
+        favorites: [],
+      };
+
+    case ACTIONS.LOAD_FAVORITES:
+      return {
+        ...state,
+        favorites: Array.isArray(action.payload) ? action.payload : [],
       };
     
     case ACTIONS.SET_FILTERED_VEHICLES:
@@ -266,8 +295,26 @@ export function VehicleProvider({ children }) {
   
   const removeFromCompare = useCallback((vehicleId) => dispatch({ type: ACTIONS.REMOVE_FROM_COMPARE, payload: vehicleId }), []);
   const clearComparison = useCallback(() => dispatch({ type: ACTIONS.CLEAR_COMPARISON }), []);
+  const toggleFavorite = useCallback((vehicle) => dispatch({ type: ACTIONS.TOGGLE_FAVORITE, payload: vehicle }), []);
+  const clearFavorites = useCallback(() => dispatch({ type: ACTIONS.CLEAR_FAVORITES }), []);
   
   const isInComparison = useCallback((vehicleId) => state.comparisonList.some(v => v.id === vehicleId), [state.comparisonList]);
+  const isFavorite = useCallback((vehicleId) => state.favorites.some(v => v.id === vehicleId), [state.favorites]);
+
+  useEffect(() => {
+    try {
+      const storedFavorites = JSON.parse(localStorage.getItem('cars-bikes-favorites') || '[]');
+      if (Array.isArray(storedFavorites) && storedFavorites.length > 0) {
+        dispatch({ type: ACTIONS.LOAD_FAVORITES, payload: storedFavorites });
+      }
+    } catch (error) {
+      console.error('Failed to load favorites:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cars-bikes-favorites', JSON.stringify(state.favorites));
+  }, [state.favorites]);
   
   const addVehicleAction = useCallback(async (vehicle) => {
     dispatch({ type: ACTIONS.SET_LOADING, payload: true });
@@ -320,6 +367,9 @@ export function VehicleProvider({ children }) {
     addToCompare,
     removeFromCompare,
     clearComparison,
+    toggleFavorite,
+    clearFavorites,
+    isFavorite,
     isInComparison,
     addVehicle: addVehicleAction,
     updateVehicle: updateVehicleAction,

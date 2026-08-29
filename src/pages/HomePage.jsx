@@ -147,6 +147,16 @@ export default function HomePage() {
       <section className="relative py-16 -mt-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="glass-card p-6 sm:p-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-primary-300">Market snapshot</p>
+                <h2 className="text-xl font-bold text-white mt-2">Top-performing picks this week</h2>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 text-sm text-emerald-300">
+                <TrendingUp className="w-4 h-4" />
+                +18% buyer interest
+              </div>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {stats.map(({ value, label, icon: Icon }, index) => (
                 <div
