@@ -23,7 +23,7 @@ export default function VehicleCard({ vehicle, index = 0, layout = 'grid' }) {
       style={{ animationDelay }}
     >
       {/* Image Container */}
-      <div className={`relative h-48 sm:h-52 overflow-hidden ${layout === 'list' ? 'sm:w-72 sm:h-auto sm:flex-shrink-0 sm:rounded-l-2xl sm:rounded-tr-none' : 'rounded-t-2xl'}`}>
+      <div className={`relative h-48 sm:h-52 overflow-hidden ${layout === 'list' ? 'sm:w-72 sm:h-72 sm:flex-shrink-0 sm:rounded-l-2xl sm:rounded-tr-none' : 'rounded-t-2xl'}`}>
         <img
           src={vehicle.image}
           alt={vehicle.name}

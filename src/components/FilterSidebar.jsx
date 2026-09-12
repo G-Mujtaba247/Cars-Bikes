@@ -124,6 +124,16 @@ export default function FilterSidebar({ vehicleType = 'all' }) {
               <label
                 key={brand}
                 className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer hover:bg-white/5 transition-all duration-200"
+                onClick={() => toggleBrand(brand)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggleBrand(brand);
+                  }
+                }}
+                role="checkbox"
+                aria-checked={filters.brands.includes(brand)}
+                tabIndex={0}
               >
                 <div
                   className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200 ${
