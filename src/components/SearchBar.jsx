@@ -25,8 +25,6 @@ export default function SearchBar({
   // Debounced search for suggestions
   useEffect(() => {
     if (query.length < 2) {
-      setSuggestions([]);
-      setIsOpen(false);
       return;
     }
 
@@ -117,8 +115,13 @@ export default function SearchBar({
             type="text"
             value={query}
             onChange={(e) => {
-              setQuery(e.target.value);
+              const nextQuery = e.target.value;
+              setQuery(nextQuery);
               setSelectedIndex(-1);
+              if (nextQuery.length < 2) {
+                setSuggestions([]);
+                setIsOpen(false);
+              }
             }}
             onKeyDown={handleKeyDown}
             onFocus={() => suggestions.length > 0 && setIsOpen(true)}

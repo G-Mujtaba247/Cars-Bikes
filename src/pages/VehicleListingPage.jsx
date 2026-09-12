@@ -25,7 +25,6 @@ export default function VehicleListingPage({ type = 'car' }) {
       brands: searchParams.get('brand') ? [searchParams.get('brand')] : [],
       fuelTypes: searchParams.get('fuel') ? [searchParams.get('fuel')] : [],
     });
-    setCurrentPage(1);
   }, [type, searchParams, setCategory, setFilter, setSearch]);
 
   useEffect(() => {
