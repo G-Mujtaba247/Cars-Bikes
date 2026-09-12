@@ -7,7 +7,7 @@ import { Fuel, Gauge, Settings, Star, GitCompare, Check, IndianRupee, Heart } fr
 import { useVehicle } from '../context/VehicleContext';
 import { formatPrice } from '../utils/vehicles';
 
-export default function VehicleCard({ vehicle, index = 0 }) {
+export default function VehicleCard({ vehicle, index = 0, layout = 'grid' }) {
   const { addToCompare, removeFromCompare, isInComparison, toggleFavorite, isFavorite } = useVehicle();
   const inComparison = isInComparison(vehicle.id);
   const liked = isFavorite(vehicle.id);
@@ -17,13 +17,13 @@ export default function VehicleCard({ vehicle, index = 0 }) {
 
   return (
     <div
-      className={`glass-card-hover group relative overflow-hidden animate-fade-in ${
+      className={`glass-card-hover group relative overflow-hidden animate-fade-in ${layout === 'list' ? 'sm:flex' : ''} ${
         vehicle.type === 'car' ? 'hover:headlight-glow' : 'hover:taillight-glow'
       }`}
       style={{ animationDelay }}
     >
       {/* Image Container */}
-      <div className="relative h-48 sm:h-52 overflow-hidden rounded-t-2xl">
+      <div className={`relative h-48 sm:h-52 overflow-hidden ${layout === 'list' ? 'sm:w-72 sm:h-auto sm:flex-shrink-0 sm:rounded-l-2xl sm:rounded-tr-none' : 'rounded-t-2xl'}`}>
         <img
           src={vehicle.image}
           alt={vehicle.name}
@@ -84,7 +84,7 @@ export default function VehicleCard({ vehicle, index = 0 }) {
       </div>
 
       {/* Content */}
-      <div className="p-4 sm:p-5">
+      <div className={`p-4 sm:p-5 ${layout === 'list' ? 'flex-1' : ''}`}>
         {/* Brand */}
         <p className="text-xs text-primary-400 font-medium uppercase tracking-wider mb-1">
           {vehicle.brand}

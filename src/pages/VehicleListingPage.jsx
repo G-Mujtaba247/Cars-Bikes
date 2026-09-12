@@ -11,25 +11,26 @@ import FilterSidebar from '../components/FilterSidebar';
 import SearchBar from '../components/SearchBar';
 
 export default function VehicleListingPage({ type = 'car' }) {
-  const { filteredVehicles, setCategory, setSearch, filters, error, isLoading } = useVehicle();
+  const { filteredVehicles, setCategory, setSearch, setFilter, filters, error, isLoading } = useVehicle();
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem(`vehicle-view-${type}`) || 'grid');
   const [searchParams] = useSearchParams();
   const vehiclesPerPage = 8;
 
   // Set the vehicle category when the page loads or type changes
   useEffect(() => {
     setCategory(type);
+    setSearch(searchParams.get('q') || '');
+    setFilter({
+      brands: searchParams.get('brand') ? [searchParams.get('brand')] : [],
+      fuelTypes: searchParams.get('fuel') ? [searchParams.get('fuel')] : [],
+    });
     setCurrentPage(1);
-  }, [type, setCategory]);
+  }, [type, searchParams, setCategory, setFilter, setSearch]);
 
-  // Handle URL search params for brand/fuel filtering
   useEffect(() => {
-    const brand = searchParams.get('brand');
-    const fuel = searchParams.get('fuel');
-    if (brand || fuel) {
-      // URL-based filtering could be added here
-    }
-  }, [searchParams]);
+    localStorage.setItem(`vehicle-view-${type}`, viewMode);
+  }, [type, viewMode]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredVehicles.length / vehiclesPerPage);
@@ -134,16 +135,34 @@ export default function VehicleListingPage({ type = 'car' }) {
             {currentVehicles.length > 0 ? (
               <>
                 {/* Results count */}
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between gap-4 mb-6">
                   <p className="text-sm text-gray-500">
                     Showing {startIndex + 1}-{Math.min(startIndex + vehiclesPerPage, filteredVehicles.length)} of {filteredVehicles.length} results
                   </p>
+                  <div className="flex items-center gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
+                    <button
+                      onClick={() => setViewMode('grid')}
+                      className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-primary-500/20 text-primary-300' : 'text-gray-500 hover:text-white'}`}
+                      aria-label="Use grid view"
+                      title="Grid view"
+                    >
+                      <Grid3X3 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('list')}
+                      className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-primary-500/20 text-primary-300' : 'text-gray-500 hover:text-white'}`}
+                      aria-label="Use list view"
+                      title="List view"
+                    >
+                      <List className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Vehicle Grid */}
-                <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className={viewMode === 'grid' ? 'grid sm:grid-cols-2 xl:grid-cols-3 gap-6' : 'space-y-4'}>
                   {currentVehicles.map((vehicle, index) => (
-                    <VehicleCard key={vehicle.id} vehicle={vehicle} index={index} />
+                    <VehicleCard key={vehicle.id} vehicle={vehicle} index={index} layout={viewMode} />
                   ))}
                 </div>
 

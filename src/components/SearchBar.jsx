@@ -45,7 +45,7 @@ export default function SearchBar({
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [allVehicles, query]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -88,6 +88,8 @@ export default function SearchBar({
     e.preventDefault();
     if (onSearch) {
       onSearch(query);
+    } else {
+      navigate(query.trim() ? `/cars?q=${encodeURIComponent(query.trim())}` : '/cars');
     }
     setIsOpen(false);
   };
