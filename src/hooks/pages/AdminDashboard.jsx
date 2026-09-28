@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useVehicle } from '../context/VehicleContext';
+import { useVehicle } from '../../context/VehicleContext';
 import { 
   Plus, 
   Search, 
@@ -19,7 +19,7 @@ import {
   Image as ImageIcon,
   LogOut
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 
 const AdminDashboard = () => {

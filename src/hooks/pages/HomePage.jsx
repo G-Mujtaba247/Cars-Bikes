@@ -5,9 +5,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Car, Bike, Zap, Shield, Award, TrendingUp, ChevronRight, Star } from 'lucide-react';
-import SearchBar from '../components/SearchBar';
-import VehicleCard from '../components/VehicleCard';
-import { useVehicle } from '../context/VehicleContext';
+import SearchBar from '../../components/SearchBar';
+import VehicleCard from '../../components/VehicleCard';
+import { useVehicle } from '../../context/VehicleContext';
 
 export default function HomePage() {
   const { cars, bikes, error, isLoading } = useVehicle();
