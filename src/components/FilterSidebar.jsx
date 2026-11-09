@@ -6,8 +6,12 @@ import { useState } from 'react';
 import { SlidersHorizontal, X, ChevronDown, RotateCcw } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
 
-export default function FilterSidebar({ vehicleType = 'all' }) {
+export default function FilterSidebar({ vehicleType = 'all', onFilterChange = () => {} }) {
   const { filters, setFilter, resetFilters, allVehicles, cars, bikes } = useVehicle();
+  const applyFilter = (update) => {
+    setFilter(update);
+    onFilterChange();
+  };
   const [isOpen, setIsOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     sort: true,
@@ -28,14 +32,14 @@ export default function FilterSidebar({ vehicleType = 'all' }) {
     const newBrands = filters.brands.includes(brand)
       ? filters.brands.filter(b => b !== brand)
       : [...filters.brands, brand];
-    setFilter({ brands: newBrands });
+    applyFilter({ brands: newBrands });
   };
 
   const toggleFuelType = (fuel) => {
     const newFuelTypes = filters.fuelTypes.includes(fuel)
       ? filters.fuelTypes.filter(f => f !== fuel)
       : [...filters.fuelTypes, fuel];
-    setFilter({ fuelTypes: newFuelTypes });
+    applyFilter({ fuelTypes: newFuelTypes });
   };
 
   const sortOptions = [
@@ -86,7 +90,7 @@ export default function FilterSidebar({ vehicleType = 'all' }) {
             {sortOptions.map(({ value, label }) => (
               <button
                 key={value}
-                onClick={() => setFilter({ sortBy: value })}
+                onClick={() => applyFilter({ sortBy: value })}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
                   filters.sortBy === value
                     ? 'bg-primary-500/20 text-primary-300 font-medium'
@@ -210,7 +214,7 @@ export default function FilterSidebar({ vehicleType = 'all' }) {
             {pricePresets.map(({ label, min, max }) => (
               <button
                 key={label}
-                onClick={() => setFilter({ priceRange: { min, max } })}
+                onClick={() => applyFilter({ priceRange: { min, max } })}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
                   filters.priceRange.min === min && filters.priceRange.max === max
                     ? 'bg-primary-500/20 text-primary-300 font-medium border border-primary-500/30'
@@ -227,7 +231,10 @@ export default function FilterSidebar({ vehicleType = 'all' }) {
       {/* Reset Button */}
       {activeFilterCount > 0 && (
         <button
-          onClick={resetFilters}
+          onClick={() => {
+            resetFilters();
+            onFilterChange();
+          }}
           className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-all duration-300 text-sm font-medium"
         >
           <RotateCcw className="w-4 h-4" />

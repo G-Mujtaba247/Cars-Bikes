@@ -44,7 +44,7 @@ function DragStripSimulation({ vehicleA, vehicleB }) {
   const [posA, setPosA] = useState(0);
   const [posB, setPosB] = useState(0);
   const [winner, setWinner] = useState(null);
-  
+
   const timerRef = useRef(null);
   const animRef = useRef(null);
 
@@ -55,6 +55,7 @@ function DragStripSimulation({ vehicleA, vehicleB }) {
   const powerB = parseNumber(vehicleB.power);
   const weightB = parseWeight(vehicleB.specifications?.kerbWeight || vehicleB.specifications?.weight, vehicleB.type);
   const ratioB = powerB / weightB;
+  const verdict = winner ? getRaceVerdict(winner, vehicleA, vehicleB, ratioA, ratioB) : '';
 
   const startRace = () => {
     setRaceStatus('countdown');
