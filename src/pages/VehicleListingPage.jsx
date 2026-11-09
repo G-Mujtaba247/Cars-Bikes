@@ -12,7 +12,7 @@ import SearchBar from '../components/SearchBar';
 
 export default function VehicleListingPage({ type = 'car' }) {
   const { filteredVehicles, setCategory, setSearch, setFilter, filters, error, isLoading } = useVehicle();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState({ vehicles: null, page: 1 });
   const [viewMode, setViewMode] = useState(() => localStorage.getItem(`vehicle-view-${type}`) || 'grid');
   const [searchParams] = useSearchParams();
   const vehiclesPerPage = 8;
@@ -33,12 +33,12 @@ export default function VehicleListingPage({ type = 'car' }) {
 
   // Pagination logic
   const totalPages = Math.ceil(filteredVehicles.length / vehiclesPerPage);
+  const currentPage = pagination.vehicles === filteredVehicles ? pagination.page : 1;
   const startIndex = (currentPage - 1) * vehiclesPerPage;
   const currentVehicles = filteredVehicles.slice(startIndex, startIndex + vehiclesPerPage);
 
   const handleSearch = (query) => {
     setSearch(query);
-    setCurrentPage(1);
   };
 
   const isCar = type === 'car';
@@ -169,7 +169,7 @@ export default function VehicleListingPage({ type = 'car' }) {
                 {totalPages > 1 && (
                   <div className="mt-10 flex items-center justify-center gap-2">
                     <button
-                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      onClick={() => setPagination({ vehicles: filteredVehicles, page: Math.max(currentPage - 1, 1) })}
                       disabled={currentPage === 1}
                       className="px-4 py-2 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
                     >
@@ -178,7 +178,7 @@ export default function VehicleListingPage({ type = 'car' }) {
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                       <button
                         key={page}
-                        onClick={() => setCurrentPage(page)}
+                        onClick={() => setPagination({ vehicles: filteredVehicles, page })}
                         className={`w-10 h-10 rounded-xl text-sm font-medium transition-all duration-300 ${
                           currentPage === page
                             ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
@@ -189,7 +189,7 @@ export default function VehicleListingPage({ type = 'car' }) {
                       </button>
                     ))}
                     <button
-                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      onClick={() => setPagination({ vehicles: filteredVehicles, page: Math.min(currentPage + 1, totalPages) })}
                       disabled={currentPage === totalPages}
                       className="px-4 py-2 rounded-xl text-sm font-medium bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
                     >

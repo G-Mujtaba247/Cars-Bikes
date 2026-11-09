@@ -2,13 +2,12 @@
  * VehicleDetailPage Component - Detailed vehicle information page
  * Features: Image gallery, specs table, features list, compare button, similar vehicles
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Star, Fuel, Gauge, Settings, Zap, GitCompare, Check,
   Calendar, Users, Layers, Weight, Droplets, ChevronRight, Share2, Heart
 } from 'lucide-react';
-import { formatPrice } from '../utils/vehicles';
 import { useVehicle } from '../context/VehicleContext';
 import VehicleCard from '../components/VehicleCard';
 
@@ -86,28 +85,25 @@ export default function VehicleDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { allVehicles, addToCompare, removeFromCompare, isInComparison, isLoading, error, toggleFavorite, isFavorite } = useVehicle();
-  const [vehicle, setVehicle] = useState(null);
-  const [similarVehicles, setSimilarVehicles] = useState([]);
   const [activeSpecTab, setActiveSpecTab] = useState('overview');
 
-  useEffect(() => {
-    if (isLoading) return;
+  const vehicle = useMemo(() => allVehicles.find(item => item.id === id), [allVehicles, id]);
+  const similarVehicles = useMemo(() => {
+    if (!vehicle) return [];
+    return allVehicles
+      .filter(item => item.type === vehicle.type && item.id !== vehicle.id)
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 4);
+  }, [allVehicles, vehicle]);
 
-    const v = allVehicles.find(v => v.id === id);
-    if (v) {
-      setVehicle(v);
-      // Get similar vehicles (same type, different vehicle)
-      const similar = allVehicles
-        .filter(sv => sv.type === v.type && sv.id !== v.id)
-        .sort((a, b) => b.rating - a.rating)
-        .slice(0, 4);
-      setSimilarVehicles(similar);
-    } else {
+  useEffect(() => {
+    if (isLoading || error) return;
+    if (!vehicle) {
       navigate('/');
+      return;
     }
-    // Scroll to top on vehicle change
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id, navigate, allVehicles, isLoading, error]);
+  }, [id, navigate, vehicle, isLoading, error]);
 
   if (error) {
     return (

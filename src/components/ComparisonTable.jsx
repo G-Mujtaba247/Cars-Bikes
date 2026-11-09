@@ -5,7 +5,6 @@
 import { Link } from 'react-router-dom';
 import { X, ExternalLink, Fuel, Gauge, Settings, Zap, CreditCard } from 'lucide-react';
 import { useVehicle } from '../context/VehicleContext';
-import { formatPrice } from '../utils/vehicles';
 
 export default function ComparisonTable() {
   const { comparisonList, removeFromCompare, clearComparison } = useVehicle();

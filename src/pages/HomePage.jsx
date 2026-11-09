@@ -2,7 +2,7 @@
  * HomePage Component - Landing page with hero section, search, and featured vehicles
  * Features: Animated hero, category cards, featured vehicles carousel, stats section
  */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Car, Bike, Zap, Shield, Award, TrendingUp, ChevronRight, Star } from 'lucide-react';
 import SearchBar from '../components/SearchBar';

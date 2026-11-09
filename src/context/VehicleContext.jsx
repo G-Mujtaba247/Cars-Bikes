@@ -2,7 +2,7 @@
  * VehicleContext - Global state management for vehicle data, filters, and comparison
  * Uses React Context API with useReducer for complex state management
  */
-import { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
+import { createContext, useContext, useReducer, useCallback, useEffect, useMemo } from 'react';
 import * as api from '../services/api';
 
 // Initial state for the vehicle context
@@ -156,7 +156,7 @@ function vehicleReducer(state, action) {
         allVehicles: action.payload.allVehicles,
       };
     
-    case ACTIONS.ADD_VEHICLE:
+    case ACTIONS.ADD_VEHICLE: {
       const addedVehicle = action.payload;
       const newCars = addedVehicle.type === 'car' ? [...state.cars, addedVehicle] : state.cars;
       const newBikes = addedVehicle.type === 'bike' ? [...state.bikes, addedVehicle] : state.bikes;
@@ -166,8 +166,9 @@ function vehicleReducer(state, action) {
         bikes: newBikes,
         allVehicles: [...state.allVehicles, addedVehicle],
       };
+    }
 
-    case ACTIONS.UPDATE_VEHICLE:
+    case ACTIONS.UPDATE_VEHICLE: {
       const updatedVehicle = action.payload;
       const updatedCars = updatedVehicle.type === 'car' 
         ? state.cars.map(v => v.id === updatedVehicle.id ? updatedVehicle : v) 
@@ -181,8 +182,9 @@ function vehicleReducer(state, action) {
         bikes: updatedBikes,
         allVehicles: state.allVehicles.map(v => v.id === updatedVehicle.id ? updatedVehicle : v),
       };
+    }
 
-    case ACTIONS.DELETE_VEHICLE:
+    case ACTIONS.DELETE_VEHICLE: {
       const { id, type } = action.payload;
       return {
         ...state,
@@ -190,6 +192,7 @@ function vehicleReducer(state, action) {
         bikes: type === 'bike' ? state.bikes.filter(v => v.id !== id) : state.bikes,
         allVehicles: state.allVehicles.filter(v => v.id !== id),
       };
+    }
     
     default:
       return state;
@@ -225,8 +228,7 @@ export function VehicleProvider({ children }) {
     loadData();
   }, [loadData]);
 
-  // Apply filters and return filtered vehicles
-  const applyFilters = useCallback(() => {
+  const filteredVehicles = useMemo(() => {
     const { type, searchQuery, brands, fuelTypes, priceRange, sortBy } = state.filters;
     
     // Start with appropriate dataset
@@ -277,7 +279,7 @@ export function VehicleProvider({ children }) {
     }
     
     return filtered;
-  }, [state.filters]);
+  }, [state.cars, state.bikes, state.allVehicles, state.filters]);
   
   // Action creators
   const setFilter = useCallback((filterUpdate) => dispatch({ type: ACTIONS.SET_FILTER, payload: filterUpdate }), []);
@@ -359,7 +361,7 @@ export function VehicleProvider({ children }) {
 
   const value = {
     ...state,
-    filteredVehicles: applyFilters(),
+    filteredVehicles,
     setFilter,
     resetFilters,
     setSearch,

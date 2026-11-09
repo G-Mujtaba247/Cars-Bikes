@@ -22,6 +22,21 @@ function parseWeight(str, type) {
   return match ? parseFloat(match[1]) : (type === 'car' ? 1200 : 180);
 }
 
+function getRaceVerdict(winner, vehicleA, vehicleB, ratioA, ratioB) {
+  if (!winner) return '';
+
+  const loser = winner.id === vehicleA.id ? vehicleB : vehicleA;
+  const winRatio = winner.id === vehicleA.id ? ratioA : ratioB;
+  const loseRatio = winner.id === vehicleA.id ? ratioB : ratioA;
+  const ratioDiff = ((winRatio / (loseRatio || 1) - 1) * 100).toFixed(0);
+
+  if (parseFloat(ratioDiff) > 18) {
+    return `The ${winner.name} completely dominated the strip due to a massive power-to-weight ratio advantage of ${ratioDiff}%. It surged off the starting line!`;
+  }
+
+  return `A thrilling photo finish! The ${winner.name} narrowly edged out the ${loser.name} thanks to a slightly better power-to-weight delivery (${(winRatio * 1000).toFixed(1)} hp/ton vs ${(loseRatio * 1000).toFixed(1)} hp/ton).`;
+}
+
 // Custom interactive Drag Strip Race Simulator
 function DragStripSimulation({ vehicleA, vehicleB }) {
   const [raceStatus, setRaceStatus] = useState('idle'); // 'idle' | 'countdown' | 'racing' | 'finished'
@@ -29,7 +44,6 @@ function DragStripSimulation({ vehicleA, vehicleB }) {
   const [posA, setPosA] = useState(0);
   const [posB, setPosB] = useState(0);
   const [winner, setWinner] = useState(null);
-  const [verdict, setVerdict] = useState('');
   
   const timerRef = useRef(null);
   const animRef = useRef(null);
@@ -48,7 +62,6 @@ function DragStripSimulation({ vehicleA, vehicleB }) {
     setPosA(0);
     setPosB(0);
     setWinner(null);
-    setVerdict('');
 
     let count = 3;
     timerRef.current = setInterval(() => {
@@ -100,25 +113,7 @@ function DragStripSimulation({ vehicleA, vehicleB }) {
     return () => {
       cancelAnimationFrame(animRef.current);
     };
-  }, [raceStatus]);
-
-  useEffect(() => {
-    if (raceStatus !== 'finished' || !winner) return;
-
-    const loser = winner.id === vehicleA.id ? vehicleB : vehicleA;
-    const winRatio = winner.id === vehicleA.id ? ratioA : ratioB;
-    const loseRatio = winner.id === vehicleA.id ? ratioB : ratioA;
-    const ratioDiff = ((winRatio / (loseRatio || 1) - 1) * 100).toFixed(0);
-
-    let reasonText = '';
-    if (parseFloat(ratioDiff) > 18) {
-      reasonText = `The ${winner.name} completely dominated the strip due to a massive power-to-weight ratio advantage of ${ratioDiff}%. It surged off the starting line!`;
-    } else {
-      reasonText = `A thrilling photo finish! The ${winner.name} narrowly edged out the ${loser.name} thanks to a slightly better power-to-weight delivery (${(winRatio * 1000).toFixed(1)} hp/ton vs ${(loseRatio * 1000).toFixed(1)} hp/ton).`;
-    }
-
-    setVerdict(reasonText);
-  }, [raceStatus, winner]);
+  }, [raceStatus, ratioA, ratioB, vehicleA, vehicleB]);
 
   useEffect(() => {
     return () => {
@@ -254,7 +249,7 @@ function DragStripSimulation({ vehicleA, vehicleB }) {
 }
 
 export default function ComparePage() {
-  const { comparisonList, addToCompare, clearComparison, allVehicles, error, isLoading } = useVehicle();
+  const { comparisonList, addToCompare, allVehicles, error } = useVehicle();
   const [showSelector, setShowSelector] = useState(false);
   const [selectorSearch, setSelectorSearch] = useState('');
 

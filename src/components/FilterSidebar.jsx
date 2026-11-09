@@ -66,7 +66,7 @@ export default function FilterSidebar({ vehicleType = 'all' }) {
     (filters.priceRange.min > 0 || filters.priceRange.max < 100000000 ? 1 : 0);
 
   // Filter content (shared between mobile/desktop)
-  const FilterContent = () => (
+  const renderFilterContent = () => (
     <div className="space-y-4">
       {/* Sort By */}
       <div className="glass-card p-4">
@@ -267,7 +267,7 @@ export default function FilterSidebar({ vehicleType = 'all' }) {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <FilterContent />
+            {renderFilterContent()}
           </div>
         </div>
       )}
@@ -279,7 +279,7 @@ export default function FilterSidebar({ vehicleType = 'all' }) {
             <SlidersHorizontal className="w-5 h-5 text-primary-400" />
             Filters
           </h2>
-          <FilterContent />
+          {renderFilterContent()}
         </div>
       </div>
     </>

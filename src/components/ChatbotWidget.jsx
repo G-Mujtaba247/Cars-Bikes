@@ -195,7 +195,7 @@ export default function ChatbotWidget() {
       };
       setMessages(prev => [...prev, botMessage]);
       setIsTyping(false);
-    }, 800 + Math.random() * 700);
+    }, 1100);
   };
 
   const handleKeyDown = (e) => {

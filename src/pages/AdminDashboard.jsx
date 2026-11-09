@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useVehicle } from '../context/VehicleContext';
 import { 
   Plus, 
@@ -23,13 +23,12 @@ import { useAuth } from '../context/AuthContext';
 
 
 const AdminDashboard = () => {
-  const { allVehicles, isLoading, addVehicle, updateVehicle, deleteVehicle, refreshData } = useVehicle();
+  const { allVehicles, isLoading, addVehicle, updateVehicle, deleteVehicle } = useVehicle();
   const { logout, user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentVehicle, setCurrentVehicle] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     brand: '',
@@ -61,11 +60,9 @@ const AdminDashboard = () => {
   const handleOpenModal = (vehicle = null) => {
     if (vehicle) {
       setIsEditing(true);
-      setCurrentVehicle(vehicle);
       setFormData({ ...vehicle });
     } else {
       setIsEditing(false);
-      setCurrentVehicle(null);
       setFormData({
         name: '',
         brand: '',

@@ -43,11 +43,10 @@ export default function Navbar() {
     localStorage.setItem('showroom-theme', activeTheme);
   }, [activeTheme]);
 
-  // Close menu and theme panel on route change
-  useEffect(() => {
+  const closeMenus = () => {
     setIsOpen(false);
     setShowThemePanel(false);
-  }, [location]);
+  };
 
   const navLinks = [
     { path: '/', label: 'Home', icon: Home },
@@ -72,7 +71,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-3 group" onClick={closeMenus}>
             <div className="relative">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
                 <Car className="w-5 h-5 text-white" />
@@ -95,6 +94,7 @@ export default function Navbar() {
               <Link
                 key={path}
                 to={path}
+                onClick={closeMenus}
                 className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                   isActive(path)
                     ? 'bg-primary-500/20 text-primary-300 border border-primary-500/30'
@@ -116,6 +116,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3 relative">
             <Link
               to="/cars"
+              onClick={closeMenus}
               className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-300"
             >
               <Search className="w-5 h-5" />
@@ -198,6 +199,7 @@ export default function Navbar() {
             <Link
               key={path}
               to={path}
+              onClick={closeMenus}
               className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                 isActive(path)
                   ? 'bg-primary-500/20 text-primary-300 border border-primary-500/30'
